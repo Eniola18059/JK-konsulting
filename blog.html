@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JK Consulting — Blog</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root{
+      --bg-900:#040510;
+      --bg-800:#071026;
+      --muted:#bfcbdc;
+      --accent-1:#7c5cff;
+      --accent-2:#00d1ff;
+      --accent-3:#ffd166;
+      --card: rgba(255,255,255,0.03);
+      --text:#eef7ff;
+      --success:#25D366;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:
+      radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent),
+      radial-gradient(800px 400px at 90% 80%, rgba(0,209,255,0.03), transparent),
+      linear-gradient(180deg,var(--bg-900) 0%, var(--bg-800) 60%); color:var(--text);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    }
+
+    .container-xl { max-width:1120px; margin:0 auto; padding:24px; }
+
+    /* Orbs */
+    .orb { position:absolute; border-radius:50%; filter: blur(72px); pointer-events:none; mix-blend-mode:screen; opacity:0.9; z-index:0; }
+    .orb.o1 { width:480px; height:480px; left:-120px; top:-60px; background: linear-gradient(180deg,var(--accent-1), rgba(92,57,255,0.35)); }
+    .orb.o2 { width:320px; height:320px; right:-80px; top:40px; background: linear-gradient(180deg,var(--accent-2), rgba(0,209,255,0.25)); }
+    .orb.o3 { width:200px; height:200px; left:18%; bottom:-90px; background: linear-gradient(180deg,var(--accent-3), rgba(255,160,60,0.25)); }
+
+    /* NAV */
+    nav.blog-nav { padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+    .brand { display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text); }
+    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,var(--accent-1), #5b3bff); font-weight:800; color:white; }
+
+    /* HERO */
+    .hero {
+      padding:64px 0 40px;
+      position:relative;
+      text-align:left;
+    }
+    .hero-grid { display:grid; grid-template-columns: 1fr 360px; gap:28px; align-items:start; }
+    .hero h1 { font-size: clamp(28px, 4.8vw, 44px); margin:0; font-weight:900; line-height:1.02;
+      background:linear-gradient(90deg,var(--accent-1),var(--accent-2),var(--accent-3));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .hero p.lead { color:var(--muted); margin-top:8px; max-width:60ch; }
+
+    /* search + filters */
+    .search-wrap { display:flex; gap:10px; align-items:center; margin-top:18px; }
+    .tag { padding:8px 12px; border-radius:999px; background: rgba(255,255,255,0.02); color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer; font-weight:700; }
+    .tag.active { background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white; border:none; transform:translateY(-2px); box-shadow:0 12px 30px rgba(92,57,255,0.12); }
+
+    /* layout */
+    .main-grid { display:grid; grid-template-columns: 1fr 320px; gap:28px; margin-top:28px; align-items:start; }
+    .featured {
+      border-radius:14px; overflow:hidden; position:relative;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04); padding:18px;
+    }
+    .featured .meta { display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-weight:700; }
+    .featured img { width:100%; height:220px; object-fit:cover; border-radius:10px; margin-bottom:12px; }
+
+    .posts-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:18px; }
+    .post-card {
+      border-radius:12px; padding:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04); transition:transform .28s ease, box-shadow .28s ease; display:flex; flex-direction:column; gap:10px;
+    }
+    .post-card:hover { transform: translateY(-8px); box-shadow: 0 28px 70px rgba(2,8,23,0.5); }
+    .post-card .thumb { width:100%; height:140px; object-fit:cover; border-radius:8px; }
+    .post-card .kicker { font-size:12px; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:0.8px; }
+    .post-card .title { font-weight:800; margin:0; color:var(--text); }
+    .post-card .excerpt { color:var(--muted); margin-top:6px; flex:1; }
+
+    /* sidebar */
+    aside.sidebar { position:relative; }
+    .widget { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:14px; border:1px solid rgba(255,255,255,0.04); margin-bottom:14px; }
+    .popular-list { display:flex; flex-direction:column; gap:10px; }
+    .small-thumb { width:64px; height:48px; object-fit:cover; border-radius:8px; }
+
+    /* pagination */
+    .pagination { display:flex; gap:8px; justify-content:center; margin-top:18px; }
+
+    /* modal */
+    .modal-content { background: linear-gradient(180deg, rgba(12,16,24,0.96), rgba(8,12,20,0.96)); color:var(--muted); border-radius:12px; }
+
+    /* floating whatsapp */
+    .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; flex-direction:column; gap:12px; }
+    .float-wa .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background: linear-gradient(180deg,#25D366,#128C7E); color:white; border:none; box-shadow:0 12px 34px rgba(0,0,0,0.4); cursor:pointer; }
+
+    /* responsive */
+    @media (max-width:992px){
+      .hero-grid { grid-template-columns: 1fr; }
+      .main-grid { grid-template-columns: 1fr; }
+      .featured img { height:200px; }
+      .orb.o1 { display:none; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      * { transition: none !important; animation: none !important; }
+    }
+
+  </style>
+</head>
+<body>
+  <!-- ORBS -->
+  <div class="orb o1" aria-hidden="true"></div>
+  <div class="orb o2" aria-hidden="true"></div>
+  <div class="orb o3" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav class="blog-nav">
+    <div class="container-xl d-flex align-items-center justify-content-between">
+      <a class="brand" href="#" aria-label="JK Consulting home">
+        <div class="brand-mark">JK</div>
+        <div>
+          <div style="font-weight:800">JK Consulting</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:-4px">Career Coaching & Resumes</div>
+        </div>
+      </a>
+
+      <div class="d-flex gap-2 align-items-center">
+        <a class="btn btn-outline-light btn-sm" href="/services.html">Services</a>
+        <a class="btn btn-outline-light btn-sm" href="/why-choose-us.html">Why choose us</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container-xl" id="app">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="micro">Insights & Advice</div>
+          <h1 id="heroHeadline">Career coaching that transforms your story into offers.</h1>
+          <p class="lead">Articles on resumes, interview prep, negotiation, career strategy and hiring — practical, evidence-based, and written for busy professionals.</p>
+
+          <div class="search-wrap" style="gap:12px;">
+            <input id="searchInput" class="form-control" type="search" placeholder="Search articles (e.g., negotiation, resume, interviews)" aria-label="Search articles" style="max-width:560px;">
+            <div id="tagFilters" class="d-flex flex-wrap" style="gap:8px;">
+              <!-- tags injected by JS -->
+            </div>
+          </div>
+        </div>
+
+        <aside class="sidebar">
+          <div class="widget">
+            <strong style="display:block;margin-bottom:8px">Subscribe</strong>
+            <p style="margin:0 0 10px;color:var(--muted)">Get our best posts by email.</p>
+            <div class="d-flex gap-2">
+              <input id="subEmail" class="form-control form-control-sm" placeholder="Email address" aria-label="Email address">
+              <button id="subBtn" class="btn btn-primary btn-sm">Subscribe</button>
+            </div>
+          </div>
+
+          <div class="widget">
+            <strong style="display:block;margin-bottom:8px">Popular</strong>
+            <div class="popular-list" id="popularList">
+              <!-- injected -->
+            </div>
+          </div>
+
+          <div class="widget">
+            <strong style="display:block;margin-bottom:8px">Categories</strong>
+            <div id="cats" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
+              <!-- injected -->
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- MAIN GRID: featured + posts -->
+    <section class="main-grid" aria-labelledby="postsHeading">
+      <div>
+        <div class="featured" id="featuredArticle" role="article" aria-label="Featured article">
+          <img src="https://via.placeholder.com/900x420?text=Featured+Article" alt="Featured: How to craft a resume that wins interviews">
+          <div class="meta">
+            <div class="muted">Resume • 6 mins</div>
+            <div><button id="featuredRead" class="btn btn-outline-light btn-sm">Read</button></div>
+          </div>
+          <h3 style="margin-top:12px">How to craft a resume that wins interviews (and avoids ATS traps)</h3>
+          <p class="muted" style="margin-top:8px">A practical, recruiter-oriented approach to making your experience read like impact rather than tasks.</p>
+        </div>
+
+        <div style="margin-top:22px;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2 id="postsHeading" style="margin:0">Latest posts</h2>
+            <div class="muted">Showing <span id="shownCount">0</span> of <span id="totalCount">0</span></div>
+          </div>
+
+          <div id="postsGrid" class="posts-grid" role="list">
+            <!-- posts injected here -->
+          </div>
+
+          <div class="pagination" id="pagination" aria-label="Pagination controls" style="margin-top:18px;">
+            <!-- pagination injected -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDEBAR secondary -->
+      <aside>
+        <div class="widget">
+          <strong style="display:block;margin-bottom:8px">About the blog</strong>
+          <p class="muted" style="margin:0">Actionable posts from expert coaches and recruiters — practical templates, negotiation scripts and interview frameworks.</p>
+        </div>
+
+        <div class="widget">
+          <strong style="display:block;margin-bottom:8px">Tags</strong>
+          <div id="sidebarTags" style="display:flex; gap:8px; flex-wrap:wrap;">
+            <!-- injected -->
+          </div>
+        </div>
+
+        <div class="widget">
+          <strong style="display:block;margin-bottom:8px">Contact</strong>
+          <p style="margin:0;color:var(--muted)">Quick questions? Message us on WhatsApp or book a consult.</p>
+          <div style="margin-top:10px;">
+            <button id="waContact" class="btn btn-primary btn-sm">Chat on WhatsApp</button>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- DETAIL MODAL -->
+    <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="postModalTitle">Article</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <img id="postModalImg" src="" alt="" style="width:100%; height:280px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+            <p id="postModalBody" style="color:var(--muted)"></p>
+            <div class="text-end">
+              <button id="modalShare" class="btn btn-outline-light btn-sm">Share</button>
+              <button id="modalWhatsApp" class="btn btn-primary btn-sm">Book / Chat</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- floating WhatsApp -->
+  <div class="float-wa" aria-hidden="false">
+    <button id="floatWaBtn" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><i class="fab fa-whatsapp fa-lg"></i></button>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ====== CONFIG ======
+    const WHATSAPP_PHONE = '2349065795183'; // no leading +
+    const WA_BASE = 'Hi — I would like to discuss JK Consulting blog or services.';
+
+    function openWhatsApp(msg){
+      const t = encodeURIComponent(msg || WA_BASE);
+      window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${t}`, '_blank');
+    }
+
+    // ====== SAMPLE POSTS (replace with your real content or fetch from CMS) ======
+    const POSTS = [
+      { id:1, title:"How to craft a resume that wins interviews", excerpt:"Write for recruiters: lead with achievements, quantify impact, and avoid ATS traps.", img:"https://via.placeholder.com/900x420?text=Resume+Tips", category:"Resume", tags:["resume","writing"], date:"2024-07-14", read:6 },
+      { id:2, title:"Negotiation scripts that increase offer value", excerpt:"Exact phrases and flow to use when negotiating salary and benefits.", img:"https://via.placeholder.com/900x420?text=Negotiation", category:"Negotiation", tags:["negotiation","offers"], date:"2024-06-22", read:7 },
+      { id:3, title:"How to prepare for system design interviews", excerpt:"A checklist and practice plan for technical interviews and service design.", img:"https://via.placeholder.com/900x420?text=Interviews", category:"Interview", tags:["interview","technical"], date:"2024-05-10", read:9 },
+      { id:4, title:"LinkedIn optimizations that get recruiters messaging", excerpt:"Profile headlines, about section and engagement strategies that convert.", img:"https://via.placeholder.com/900x420?text=LinkedIn", category:"Profile", tags:["linkedin","profile"], date:"2024-04-02", read:5 },
+      { id:5, title:"Transitioning to management: roadmap & resume tips", excerpt:"How to package leadership experience when you haven’t had the title yet.", img:"https://via.placeholder.com/900x420?text=Management", category:"Strategy", tags:["strategy","leadership"], date:"2024-03-15", read:8 },
+      { id:6, title:"Email outreach templates that actually get replies", excerpt:"Short, relevant templates for contacting recruiters and hiring managers.", img:"https://via.placeholder.com/900x420?text=Outreach", category:"Outreach", tags:["email","networking"], date:"2024-02-28", read:4 },
+      { id:7, title:"Senior IC to Manager: making the case for promotion", excerpt:"Data-backed approach to position yourself for an internal promotion.", img:"https://via.placeholder.com/900x420?text=Promotion", category:"Career", tags:["promotion","career"], date:"2024-01-21", read:6 },
+      { id:8, title:"Mock interview toolkit: record, review, iterate", excerpt:"How to structure mocks and use recordings to accelerate improvement.", img:"https://via.placeholder.com/900x420?text=Mock+Interviews", category:"Interview", tags:["interview","practice"], date:"2023-12-11", read:5 },
+      // add more posts as needed...
+    ];
+
+    // derived tag and category sets
+    const TAGS = Array.from(new Set(POSTS.flatMap(p => p.tags))).sort();
+    const CATS = Array.from(new Set(POSTS.map(p => p.category))).sort();
+
+    // pagination
+    const PAGE_SIZE = 6;
+    let currentPage = 1;
+    let activeTag = 'all';
+
+    // DOM refs
+    const postsGrid = document.getElementById('postsGrid');
+    const shownCountEl = document.getElementById('shownCount');
+    const totalCountEl = document.getElementById('totalCount');
+    const paginationEl = document.getElementById('pagination');
+    const tagFiltersEl = document.getElementById('tagFilters');
+    const sidebarTagsEl = document.getElementById('sidebarTags');
+    const popularListEl = document.getElementById('popularList');
+    const catsEl = document.getElementById('cats');
+    const searchInput = document.getElementById('searchInput');
+
+    // bootstrap modal instances
+    let postModalEl = document.getElementById('postModal');
+    const postModal = new bootstrap.Modal(postModalEl);
+
+    // helper: format date
+    function fmtDate(d){ const dt = new Date(d); return dt.toLocaleDateString(); }
+
+    // render helper
+    function renderTags(){
+      // top tag filters (all + tags)
+      tagFiltersEl.innerHTML = '';
+      const allBtn = document.createElement('button'); allBtn.className='tag active'; allBtn.textContent='All'; allBtn.dataset.tag='all';
+      tagFiltersEl.appendChild(allBtn);
+      allBtn.addEventListener('click', ()=>{ setTag('all'); });
+
+      TAGS.forEach(t => {
+        const b = document.createElement('button'); b.className='tag'; b.textContent = t; b.dataset.tag = t;
+        b.addEventListener('click', ()=> setTag(t));
+        tagFiltersEl.appendChild(b);
+      });
+
+      // sidebar tag chips
+      sidebarTagsEl.innerHTML = '';
+      TAGS.forEach(t => {
+        const s = document.createElement('button'); s.className='tag'; s.textContent = t; s.dataset.tag=t;
+        s.style.fontSize='13px'; s.addEventListener('click', ()=> setTag(t));
+        sidebarTagsEl.appendChild(s);
+      });
+
+      // categories
+      catsEl.innerHTML = '';
+      CATS.forEach(c => {
+        const el = document.createElement('button'); el.className='tag'; el.textContent = c; el.addEventListener('click', ()=> setTag(c, true));
+        catsEl.appendChild(el);
+      });
+    }
+
+    function setTag(tag, treatAsCategory=false){
+      // if clicked category, convert to filter by category
+      activeTag = tag;
+      currentPage = 1;
+      // update active classes
+      document.querySelectorAll('#tagFilters .tag').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
+      document.querySelectorAll('#sidebarTags .tag').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
+      // if category filter (treatAsCategory true), mark category buttons active (just visual)
+      // re-render
+      renderPosts();
+    }
+
+    function filteredPosts(){
+      const q = (searchInput.value || '').trim().toLowerCase();
+      let items = POSTS.slice(); // copy
+      if (activeTag && activeTag !== 'all') {
+        // match both tag and category names
+        items = items.filter(p => p.tags.includes(activeTag) || p.category === activeTag);
+      }
+      if (q) {
+        items = items.filter(p => (p.title + ' ' + p.excerpt + ' ' + p.tags.join(' ')).toLowerCase().includes(q));
+      }
+      return items;
+    }
+
+    function renderPosts(){
+      const items = filteredPosts();
+      totalCountEl.textContent = items.length;
+      // pagination
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageItems = items.slice(start, start + PAGE_SIZE);
+
+      // render
+      postsGrid.innerHTML = '';
+      pageItems.forEach(p => {
+        const card = document.createElement('article');
+        card.className = 'post-card';
+        card.tabIndex = 0;
+        card.innerHTML = `
+          <img class="thumb" src="${p.img}" alt="${p.title}">
+          <div class="kicker">${p.category} • ${fmtDate(p.date)} • ${p.read} min</div>
+          <h4 class="title">${p.title}</h4>
+          <p class="excerpt">${p.excerpt}</p>
+          <div style="display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:8px;">
+            <div style="display:flex;gap:6px;align-items:center;">
+              ${p.tags.map(t => `<span class="tag" style="font-size:12px;padding:6px 8px;">${t}</span>`).join(' ')}
+            </div>
+            <div>
+              <button class="btn btn-outline-light btn-sm readBtn" data-id="${p.id}">Read</button>
+            </div>
+          </div>
+        `;
+        postsGrid.appendChild(card);
+
+        // keyboard: Enter opens read
+        card.addEventListener('keydown', (e)=> { if (e.key === 'Enter') card.querySelector('.readBtn')?.click(); });
+      });
+
+      shownCountEl.textContent = pageItems.length;
+
+      // pagination controls
+      const pageCount = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+      paginationEl.innerHTML = '';
+      if (pageCount > 1) {
+        for (let i=1;i<=pageCount;i++){
+          const b = document.createElement('button'); b.className='btn btn-outline-light btn-sm'; b.textContent = i;
+          if (i === currentPage) b.classList.add('active');
+          b.addEventListener('click', ()=>{ currentPage = i; renderPosts(); window.scrollTo({top:document.getElementById('postsHeading').offsetTop - 80, behavior:'smooth'}); });
+          paginationEl.appendChild(b);
+        }
+      }
+
+      // wire read buttons
+      document.querySelectorAll('.readBtn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = +btn.dataset.id;
+          const post = POSTS.find(x => x.id === id);
+          if (post) openPostModal(post);
+        });
+      });
+
+      // animate cards
+      animateCards();
+      renderPopular();
+    }
+
+    // featured read button
+    document.getElementById('featuredRead').addEventListener('click', ()=> { openPostModal(POSTS[0]); });
+
+    // render popular list (top by read time as placeholder)
+    function renderPopular(){
+      const top = POSTS.slice(0,4);
+      popularListEl.innerHTML = '';
+      top.forEach(p => {
+        const el = document.createElement('div'); el.style.display='flex'; el.style.gap='10px'; el.style.alignItems='center';
+        el.innerHTML = `
+          <img class="small-thumb" src="${p.img}" alt="${p.title}">
+          <div style="flex:1">
+            <div style="font-weight:800">${p.title}</div>
+            <div style="font-size:13px;color:var(--muted)">${fmtDate(p.date)}</div>
+          </div>
+        `;
+        el.addEventListener('click', ()=> openPostModal(p));
+        popularListEl.appendChild(el);
+      });
+    }
+
+    // open modal
+    function openPostModal(post){
+      document.getElementById('postModalTitle').textContent = post.title;
+      document.getElementById('postModalImg').src = post.img;
+      document.getElementById('postModalImg').alt = post.title;
+      document.getElementById('postModalBody').textContent = post.excerpt + ' — (This is a preview. Full article content would appear here.)';
+      document.getElementById('modalWhatsApp').onclick = ()=> openWhatsApp(`Hi — I want to discuss "${post.title}" or book a consult.`);
+      document.getElementById('modalShare').onclick = ()=> { navigator.clipboard?.writeText(window.location.href + '#post-' + post.id).then(()=> alert('Link copied to clipboard')); };
+      postModal.show();
+    }
+
+    // search / filters wiring
+    searchInput.addEventListener('input', ()=> { currentPage = 1; renderPosts(); });
+
+    // subscribe simulation
+    document.getElementById('subBtn').addEventListener('click', ()=> {
+      const email = document.getElementById('subEmail').value.trim();
+      if (!email) { alert('Enter your email'); return; }
+      alert('Thanks — you are subscribed (demo).');
+      document.getElementById('subEmail').value='';
+    });
+
+    // WA buttons
+    document.getElementById('waContact').addEventListener('click', ()=> openWhatsApp());
+    document.getElementById('floatWaBtn').addEventListener('click', ()=> openWhatsApp('Hi — I have a question about careers and coaching.'));
+
+    // keyboard accessibility for modal buttons
+    document.querySelectorAll('button').forEach(b => b.addEventListener('keydown', (e)=> { if (e.key === 'Enter') b.click(); }));
+
+    // animations
+    function animateHero(){
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+      gsap.to('.orb.o1', { x: 90, y: 18, duration: 12, repeat:-1, yoyo:true, ease:'sine.inOut' });
+      gsap.to('.orb.o2', { x: -50, y: -24, duration:10, repeat:-1, yoyo:true, ease:'sine.inOut' });
+      gsap.to('.orb.o3', { x: 30, y: 14, duration:14, repeat:-1, yoyo:true, ease:'sine.inOut' });
+      gsap.from('#heroHeadline', { y:24, opacity:0, duration:0.9, ease:'power3.out' });
+    }
+
+    function animateCards(){
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+      gsap.utils.toArray('.post-card').forEach((el, idx) => {
+        gsap.fromTo(el, { y: 18, opacity:0 }, { y:0, opacity:1, duration:0.7, ease:'power3.out', delay: idx*0.04 });
+      });
+    }
+
+    // initial render
+    (function init(){
+      // render tags UI
+      renderTags();
+
+      // render posts
+      totalCountEl.textContent = POSTS.length;
+      renderPosts();
+
+      // animate hero/orbs
+      animateHero();
+
+      // show counts
+      shownCountEl.textContent = Math.min(POSTS.length, PAGE_SIZE);
+
+      // set featured image and meta (first post)
+      const feat = POSTS[0];
+      if (feat) {
+        document.querySelector('#featuredArticle img').src = feat.img;
+        document.querySelector('#featuredArticle h3').textContent = feat.title;
+        document.querySelector('#featuredArticle .meta .muted')?.textContent;
+      }
+    })();
+
+    // small improvement: highlight tag button visually when clicked elsewhere
+    document.addEventListener('click', (e)=>{
+      if (e.target.classList.contains('tag') && e.target.dataset.tag) {
+        document.querySelectorAll('.tag').forEach(t=> t.classList.toggle('active', t === e.target));
+      }
+    });
+
+  </script>
+</body>
+</html>

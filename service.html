@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JK Consulting — Services</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#071026;
+      --card:#0f1b36;
+      --muted:#bfcbdc;
+      --accent-1:#7c5cff;
+      --accent-2:#00d1ff;
+      --accent-3:#ffd166;
+      --success:#25D366;
+      --glass: rgba(255,255,255,0.03);
+      --text: #ecf5ff;
+    }
+
+    html,body{height:100%; margin:0; font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+      background:
+      radial-gradient(800px 400px at 5% 10%, rgba(124,92,255,0.06), transparent),
+      linear-gradient(180deg,var(--bg) 0%, #020317 70%);
+      color: var(--text);
+    }
+    a { color:inherit; text-decoration:none; }
+    .container-sm { max-width:1100px; }
+
+    /* ---------- HEADER (larger + animated gradient + orbs) ---------- */
+    header.service-hero{
+      padding:90px 20px 48px;
+      text-align:center;
+      background: linear-gradient(120deg, rgba(124,92,255,0.06), rgba(0,209,255,0.03));
+      background-size: 240% 240%;
+      border-radius: 14px;
+      margin: 18px auto;
+      transition: transform .36s ease;
+      position: relative;
+      overflow: visible;
+    }
+
+    /* header orbs (behind content) */
+    .header-orb { position:absolute; border-radius:50%; filter:blur(72px); opacity:0.85; pointer-events:none; mix-blend-mode: screen; z-index:0; }
+    .header-orb.o1 { width:420px; height:420px; left:-120px; top:-80px; background: radial-gradient(circle at 20% 30%, rgba(124,92,255,0.95), rgba(124,92,255,0.06)); }
+    .header-orb.o2 { width:300px; height:300px; right:-80px; top:20px; background: radial-gradient(circle at 60% 70%, rgba(0,209,255,0.9), rgba(0,209,255,0.06)); }
+    .header-orb.o3 { width:220px; height:220px; left:20%; bottom:-80px; background: radial-gradient(circle at 50% 50%, rgba(255,209,102,0.9), rgba(255,209,102,0.06)); }
+    header.service-hero .container-sm { position:relative; z-index:1; }
+
+    /* make 'Our Services' label bigger + stand out */
+    .micro {
+      font-size: 40.5px;
+      font-weight: 900;
+      color: var(--accent-2);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 5px;
+    }
+
+    /* Animated heading: shifting color stops on text gradient */
+    header.service-hero h1{
+      font-size: clamp(34px, 6.6vw, 64px);
+      line-height: 1.02;
+      margin-bottom: 6px;
+      letter-spacing: -0.6px;
+      font-weight:800;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3), #ff6b6b);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      will-change: background-position, transform;
+    }
+    /* final word highlight for bounce */
+    .hero-word-highlight { display:inline-block; will-change: transform; }
+
+    header.service-hero p.lead { color:var(--muted); margin-bottom:18px; max-width:84ch; margin-left:auto; margin-right:auto; }
+
+    /* slight lift on hover (desktop) */
+    @media (hover: hover) and (pointer: fine) {
+      header.service-hero:hover { transform: translateY(-6px); box-shadow: 0 32px 80px rgba(2,8,23,0.55); }
+    }
+
+    /* ---------- CONTROLS ---------- */
+    .controls{
+      display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;
+      margin-bottom:24px;
+      position: relative;
+      z-index:1;
+    }
+    .search-input { width:320px; max-width:100%; }
+    .filter-btn { border-radius:999px; padding:8px 14px; font-weight:700; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--muted); }
+    .filter-btn.active { background:linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white; box-shadow:0 8px 30px rgba(0,0,0,0.6); border:none; transform: translateY(-2px); }
+
+    /* ---------- GRID & CARD ---------- */
+    .svc-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:20px; align-items:start; }
+    .svc-card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:14px; padding:18px;
+      min-height:170px; position:relative; overflow:hidden;
+      transition: transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s ease;
+      will-change: transform;
+    }
+    .svc-card:hover{ transform: translateY(-10px); box-shadow: 0 30px 80px rgba(2,8,23,0.6); }
+    .svc-card .ico{
+      width:64px;height:64px;display:grid;place-items:center;border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.03); font-size:22px; color:var(--accent-1);
+      flex-shrink:0;
+    }
+    .svc-meta{ display:flex; gap:14px; align-items:flex-start; }
+    .svc-title{ font-weight:800; margin:0; color:var(--text); font-size:1.05rem; }
+    .svc-desc{ color:var(--muted); margin-top:6px; margin-bottom:12px; font-weight:600; }
+
+    .svc-actions{ display:flex; gap:8px; align-items:center; margin-top:auto; }
+    .btn-slim{ padding:8px 12px; border-radius:10px; font-weight:700; }
+
+    /* colorful accent strip (decorative) */
+    .svc-card::after{
+      content:''; position:absolute; left:-30%; top:-60%; width:160%; height:160%;
+      background: radial-gradient(circle at 10% 20%, rgba(124,92,255,0.06), transparent 12%),
+                  radial-gradient(circle at 90% 80%, rgba(0,209,255,0.04), transparent 8%);
+      pointer-events:none; transform:rotate(6deg); opacity:0.9;
+    }
+
+    /* floating marker class (used by JS) */
+    .floaty { transform-origin:center; }
+
+    /* ---------- FLOATING ACTIONS & MODAL ---------- */
+    .float-wa{ position:fixed; right:18px; bottom:18px; z-index:9999; display:grid; gap:10px; }
+    .float-wa .wa-btn{ width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:linear-gradient(180deg,#25D366,#128C7E); color:white; box-shadow: 0 10px 30px rgba(0,0,0,0.45); border:none; cursor:pointer; }
+    .float-wa .top-btn{ width:48px; height:48px; background: rgba(255,255,255,0.04); color:var(--text); }
+
+    .modal-content.bg-dark { background: linear-gradient(180deg, rgba(12,16,24,0.96), rgba(8,12,20,0.96)); color:var(--muted); border-radius:12px; border:1px solid rgba(255,255,255,0.04); }
+
+    /* responsive */
+    @media (max-width:760px){
+      header.service-hero{ padding-top:36px; }
+      .controls{ justify-content:center; }
+      .svc-card .ico{ width:52px; height:52px; }
+    }
+
+    /* reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      header.service-hero { transition: none; background-size: auto; }
+      .filter-btn, .svc-card, .float-wa .wa-btn { transition: none !important; transform: none !important; }
+      .svc-card:hover { transform:none !important; box-shadow:none !important; }
+    }
+
+    /* small micro */
+    .micro-inline { display:inline-block; }
+  </style>
+</head>
+<body>
+
+  <header class="service-hero">
+    <!-- Orbs (placed behind header content) -->
+    <div class="header-orb o1" aria-hidden="true"></div>
+    <div class="header-orb o2" aria-hidden="true"></div>
+    <div class="header-orb o3" aria-hidden="true"></div>
+
+    <div class="container-sm">
+      <div class="micro">Our Services</div>
+      <!-- Hero headline - text will be wrapped and animated by JS -->
+      <h1>Services designed to help you get hired — faster.</h1>
+      <p class="lead">Choose a service below, filter by category or search directly. Tap any card to read more or start booking via WhatsApp.</p>
+
+      <!-- controls -->
+      <div class="controls mt-3">
+        <input id="searchBox" class="form-control search-input" placeholder="Search services (e.g., resume, interview, LinkedIn)" aria-label="Search services">
+        <div class="d-flex align-items-center flex-wrap" role="tablist" aria-label="Filter services" style="gap:8px;">
+          <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-btn" data-filter="writing" aria-pressed="false">Writing</button>
+          <button class="filter-btn" data-filter="profile" aria-pressed="false">Profile</button>
+          <button class="filter-btn" data-filter="coaching" aria-pressed="false">Coaching</button>
+          <button class="filter-btn" data-filter="strategy" aria-pressed="false">Strategy</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container-sm pb-5">
+    <section aria-labelledby="services-heading">
+      <h2 id="services-heading" class="visually-hidden">Service list</h2>
+
+      <!-- grid -->
+      <div id="svcGrid" class="svc-grid" role="list">
+
+        <!-- Resume Refinement -->
+        <article class="svc-card" data-category="writing" role="listitem" tabindex="0" aria-labelledby="svc1-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></div>
+            <div style="flex:1">
+              <h3 id="svc1-title" class="svc-title">Resume Refinement</h3>
+              <div class="svc-desc">ATS-friendly, achievement-led rewrites and keyword optimization to convert recruiters.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="Resume Refinement" data-desc="Full resume rebuild, ATS optimisation, 2 rounds of revision.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="Resume Refinement">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- LinkedIn -->
+        <article class="svc-card" data-category="profile" role="listitem" tabindex="0" aria-labelledby="svc2-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
+            <div style="flex:1">
+              <h3 id="svc2-title" class="svc-title">LinkedIn Optimization</h3>
+              <div class="svc-desc">Profile rewrite, headline strategies and recruiter outreach tips that convert profile views into leads.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="LinkedIn Optimization" data-desc="Profile audit, rewrite, headline & about section optimisation, connection scripts.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="LinkedIn Optimization">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Interview Coaching -->
+        <article class="svc-card" data-category="coaching" role="listitem" tabindex="0" aria-labelledby="svc3-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-solid fa-comments"></i></div>
+            <div style="flex:1">
+              <h3 id="svc3-title" class="svc-title">Interview Coaching</h3>
+              <div class="svc-desc">Mock interviews, structured feedback and custom scripts to increase interview performance.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="Interview Coaching" data-desc="1:1 mock interview, timestamped feedback and a recorded session to practice from.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="Interview Coaching">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Offer Negotiation -->
+        <article class="svc-card" data-category="strategy" role="listitem" tabindex="0" aria-labelledby="svc4-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-solid fa-handshake-angle"></i></div>
+            <div style="flex:1">
+              <h3 id="svc4-title" class="svc-title">Offer Negotiation</h3>
+              <div class="svc-desc">Data-driven negotiation scripts and coaching to maximize your total compensation package.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="Offer Negotiation" data-desc="Market benchmarking, script drafting and mock negotiation practice.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="Offer Negotiation">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Career Strategy -->
+        <article class="svc-card" data-category="strategy" role="listitem" tabindex="0" aria-labelledby="svc5-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+            <div style="flex:1">
+              <h3 id="svc5-title" class="svc-title">Career Strategy</h3>
+              <div class="svc-desc">Roadmaps for promotions, pivots and leadership positioning — 6-12 month growth plans.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="Career Strategy" data-desc="1:1 roadmap session, milestone planning and follow-up resources.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="Career Strategy">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Additional sample service -->
+        <article class="svc-card" data-category="writing" role="listitem" tabindex="0" aria-labelledby="svc6-title">
+          <div class="svc-meta">
+            <div class="ico" aria-hidden="true"><i class="fa-solid fa-file-signature"></i></div>
+            <div style="flex:1">
+              <h3 id="svc6-title" class="svc-title">Cover Letter & Applications</h3>
+              <div class="svc-desc">Personalized cover letters and application pitch notes tailored to each role.</div>
+              <div class="svc-actions">
+                <button class="btn btn-outline btn-slim" data-bs-toggle="modal" data-bs-target="#detailModal" data-title="Cover Letter & Applications" data-desc="Custom cover letters for each application, outreach templates and role tailoring.">Details</button>
+                <button class="btn btn-primary btn-slim bookBtn" data-service="Cover Letter & Applications">Book</button>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Detail Modal -->
+  <div class="modal fade" id="detailModal" tabindex="-1" aria-hidden="true" aria-labelledby="detailTitle">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content bg-dark p-3">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="detailTitle">Service</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="detailBody" style="color:var(--muted);"></p>
+          <div class="text-end">
+            <button id="modalBook" class="btn btn-primary">Book via WhatsApp</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating actions -->
+  <div class="float-wa" aria-hidden="false">
+    <button id="waOpen" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+      <i class="fab fa-whatsapp fa-lg"></i>
+    </button>
+    <button id="scrollTop" class="top-btn" aria-label="Scroll to top" title="Scroll to top" style="display:none;">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ====== CONFIG ======
+    const WHATSAPP_PHONE = '2349065795183'; // your number (no leading +)
+    const WA_MSG_BASE = 'Hi — I want to enquire about: ';
+
+    // ====== UI wiring ======
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const searchBox = document.getElementById('searchBox');
+    const svcGrid = document.getElementById('svcGrid');
+    const svcCards = Array.from(document.querySelectorAll('.svc-card'));
+
+    // Filter function
+    function applyFilter(filter) {
+      svcCards.forEach(card => {
+        const cat = card.dataset.category || 'all';
+        const matches = (filter === 'all' || cat === filter);
+        card.style.display = matches ? '' : 'none';
+      });
+      // update active states
+      filterBtns.forEach(b => {
+        const f = b.dataset.filter;
+        if (f === filter) { b.classList.add('active'); b.setAttribute('aria-pressed','true'); }
+        else { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); }
+      });
+    }
+
+    filterBtns.forEach(b => {
+      b.addEventListener('click', () => applyFilter(b.dataset.filter));
+    });
+
+    // Search function (live)
+    searchBox.addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      svcCards.forEach(card => {
+        const text = (card.innerText || '').toLowerCase();
+        const matches = text.includes(q);
+        card.style.display = matches ? '' : 'none';
+      });
+      // if search non-empty, deactivate filters visually
+      if (q.length) filterBtns.forEach(b => b.classList.remove('active'));
+      else applyFilter(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+    });
+
+    // Details modal wiring
+    const detailModalEl = document.getElementById('detailModal');
+    const detailModal = new bootstrap.Modal(detailModalEl);
+    const detailTitle = document.getElementById('detailTitle');
+    const detailBody = document.getElementById('detailBody');
+    const modalBook = document.getElementById('modalBook');
+
+    detailModalEl.addEventListener('show.bs.modal', (e) => {
+      const inv = e.relatedTarget;
+      const title = inv?.getAttribute('data-title') || inv?.closest('.svc-card')?.querySelector('.svc-title')?.innerText || 'Service';
+      const desc = inv?.getAttribute('data-desc') || inv?.closest('.svc-card')?.querySelector('.svc-desc')?.innerText || '';
+      detailTitle.textContent = title;
+      detailBody.textContent = desc;
+      modalBook.dataset.service = title;
+    });
+
+    // Open detail modal when card is focused & Enter
+    svcCards.forEach(card => {
+      card.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter') {
+          const btn = card.querySelector('[data-bs-toggle="modal"]');
+          if (btn) btn.click();
+        }
+      });
+    });
+
+    // Book buttons (either in card or modal)
+    document.querySelectorAll('.bookBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const svc = btn.dataset.service || btn.getAttribute('data-service') || btn.closest('.svc-card')?.querySelector('.svc-title')?.innerText;
+        openWhatsAppBooking(svc);
+      });
+    });
+
+    modalBook.addEventListener('click', () => {
+      openWhatsAppBooking(modalBook.dataset.service || detailTitle.textContent);
+    });
+
+    function openWhatsAppBooking(serviceName){
+      const message = encodeURIComponent(WA_MSG_BASE + (serviceName || 'your services'));
+      const url = `https://wa.me/${WHATSAPP_PHONE}?text=${message}`;
+      window.open(url, '_blank');
+    }
+
+    // Floating whatsapp
+    document.getElementById('waOpen').addEventListener('click', () => {
+      const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent('Hi, I want to talk about your services.')}`;
+      window.open(url, '_blank');
+    });
+
+    // Scroll to top show/hide
+    const scrollTopBtn = document.getElementById('scrollTop');
+    window.addEventListener('scroll', () => {
+      scrollTopBtn.style.display = window.scrollY > 300 ? 'inline-grid' : 'none';
+    });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+    // ====== Animations (GSAP) ======
+    gsap.registerPlugin(ScrollTrigger);
+
+    // HERO: wrap words and animate gradient + entrance + final-word bounce
+    (function() {
+      const hero = document.querySelector('.service-hero h1');
+      if (!hero) return;
+      // respects reduced motion
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Wrap words only if not already wrapped
+      if (!hero.querySelector('span')) {
+        const text = hero.textContent.trim();
+        const words = text.split(/\s+/);
+        hero.innerHTML = words.map((w, i) => {
+          // Final word highlight (keep punctuation)
+          if (i === words.length - 1) {
+            return `<span class="hero-word-highlight" style="display:inline-block; opacity:0; transform:translateY(8px); margin-right:6px">${w}</span>`;
+          }
+          return `<span style="display:inline-block; opacity:0; transform:translateY(8px); margin-right:6px">${w}</span>`;
+        }).join('');
+      }
+
+      if (!reduced) {
+        // animate gradient movement on text via background-position oscillation
+        gsap.to(".service-hero h1", { backgroundPosition: "100% 50%", duration: 8, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+        // stagger entrance (non-highlight + highlight)
+        gsap.to('.service-hero h1 span', { y: 0, opacity: 1, filter: 'blur(0px)', duration: 0.7, stagger: 0.06, ease: 'power3.out', delay: 0.06 });
+
+        // bounce the final highlighted word softly
+        const last = document.querySelector('.service-hero .hero-word-highlight');
+        if (last) {
+          gsap.fromTo(last, { y: 0 }, { y: -6, duration: 1.8, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.8 });
+          last.addEventListener('mouseenter', () => gsap.to(last, { scale: 1.05, duration: 0.18 }));
+          last.addEventListener('mouseleave', () => gsap.to(last, { scale: 1.0, duration: 0.24 }));
+        }
+      } else {
+        // reduced motion: simply show text
+        document.querySelectorAll('.service-hero h1 span').forEach(s => { s.style.opacity = 1; s.style.transform = 'none'; });
+      }
+    })();
+
+    // card reveal on scroll + micro-tilt
+    gsap.utils.toArray('.svc-card').forEach((card, idx) => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        card.style.opacity = 1; card.style.transform = 'none';
+      } else {
+        gsap.fromTo(card, { y: 22, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: idx * 0.06,
+          scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none reverse' }
+        });
+
+        // micro-tilt on mouse move
+        card.addEventListener('mousemove', e => {
+          const rect = card.getBoundingClientRect();
+          const dx = (e.clientX - rect.left - rect.width/2) / rect.width;
+          const dy = (e.clientY - rect.top - rect.height/2) / rect.height;
+          gsap.to(card, { rotationY: dx * 6, rotationX: -dy * 6, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
+        });
+        card.addEventListener('mouseleave', () => gsap.to(card, { rotationY: 0, rotationX: 0, duration: 0.6, ease: 'power3.out' }));
+      }
+    });
+
+    // ensure initial filter = all
+    applyFilter('all');
+
+    // restore filter state when search cleared
+    searchBox.addEventListener('search', () => {
+      if (!searchBox.value.trim()) applyFilter(document.querySelector('.filter-btn.active')?.dataset.filter || 'all');
+    });
+
+    // --- Add extra site animations (header orbs motion, reveal controls, card float, WA pulse) ---
+    (function(){
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      // animated header gradient oscillation (already applied to text; animate header bg pos for subtle shift)
+      gsap.to("header.service-hero", { backgroundPosition: "80% 20%", duration: 9, repeat: -1, yoyo: true, ease: "sine.inOut" });
+
+      // reveal controls + filters
+      gsap.from(".controls", { y: 18, opacity: 0, duration: 0.7, ease: "power3.out", delay: 0.18 });
+      gsap.from(".filter-btn", { scale: 0.94, opacity: 0, stagger: 0.06, duration: 0.45, ease: "back.out(1.1)", delay: 0.35 });
+
+      // gentle float for each service card (subtle continuous y oscillation)
+      gsap.utils.toArray('.svc-card').forEach((card, i) => {
+        card.classList.add('floaty');
+        // continuous, subtle float after entrance
+        gsap.to(card, { y: '+=6', duration: 4 + (i % 3), ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1 + (i * 0.08) });
+      });
+
+      // orbs motion
+      gsap.to('.header-orb.o1', { x: 90, y: 18, rotation: 8, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to('.header-orb.o2', { x: -50, y: -24, rotation: -6, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+      gsap.to('.header-orb.o3', { x: 30, y: 14, rotation: 4, duration: 14, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+
+      // Active filter button pulse when clicked
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          gsap.fromTo(btn, { scale: 0.98 }, { scale: 1.03, duration: 0.18, yoyo: true, repeat: 1, ease: 'power1.inOut' });
+        });
+      });
+
+      // WhatsApp floating pulse
+      const wa = document.querySelector('.float-wa .wa-btn');
+      if (wa) {
+        gsap.to(wa, { scale: 1.06, boxShadow: "0 20px 60px rgba(37,211,102,0.16)", duration: 1.2, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 1.0 });
+        wa.addEventListener('mouseenter', () => gsap.to(wa, { scale: 1.08, duration: 0.18 }));
+        wa.addEventListener('mouseleave', () => gsap.to(wa, { scale: 1.0, duration: 0.24 }));
+      }
+    })();
+
+  </script>
+</body>
+</html>
