@@ -3,144 +3,155 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JK Consulting — Blog</title>
+  <title>JK Konsult — Blog</title>
+
+  <!-- Poppins (clean modern) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Inter -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
   <style>
     :root{
-      --bg-900:#040510;
-      --bg-800:#071026;
-      --muted:#bfcbdc;
-      --accent-1:#7c5cff;
-      --accent-2:#00d1ff;
-      --accent-3:#ffd166;
-      --card: rgba(255,255,255,0.03);
-      --text:#eef7ff;
-      --success:#25D366;
+      --bg: #ffffff;       /* page background (white) */
+      --text: #0a0a0a;     /* main text (near-black) */
+      --muted: #5a5a5a;    /* muted text */
+      --panel: #f6f6f6;    /* panels / cards (very light gray) */
+      --card-border: #e6e6e6;
+      --accent: #000000;   /* pure black for headings / accents */
+      --glass: rgba(0,0,0,0.03);
     }
     *{box-sizing:border-box}
-    html,body{height:100%; margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:
-      radial-gradient(1200px 600px at 10% 10%, rgba(124,92,255,0.06), transparent),
-      radial-gradient(800px 400px at 90% 80%, rgba(0,209,255,0.03), transparent),
-      linear-gradient(180deg,var(--bg-900) 0%, var(--bg-800) 60%); color:var(--text);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-
-    .container-xl { max-width:1120px; margin:0 auto; padding:24px; }
-
-    /* Orbs */
-    .orb { position:absolute; border-radius:50%; filter: blur(72px); pointer-events:none; mix-blend-mode:screen; opacity:0.9; z-index:0; }
-    .orb.o1 { width:480px; height:480px; left:-120px; top:-60px; background: linear-gradient(180deg,var(--accent-1), rgba(92,57,255,0.35)); }
-    .orb.o2 { width:320px; height:320px; right:-80px; top:40px; background: linear-gradient(180deg,var(--accent-2), rgba(0,209,255,0.25)); }
-    .orb.o3 { width:200px; height:200px; left:18%; bottom:-90px; background: linear-gradient(180deg,var(--accent-3), rgba(255,160,60,0.25)); }
+    html,body{height:100%; margin:0; font-family:"Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    a { color:var(--text); text-decoration:none; }
+    .container-xl { max-width:1120px; margin:0 auto; padding:22px; }
 
     /* NAV */
-    nav.blog-nav { padding:18px 0; border-bottom:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); }
+    nav.blog-nav { position:relative; z-index:5; padding:12px 0; background:transparent; border-bottom:1px solid var(--card-border); }
     .brand { display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text); }
-    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,var(--accent-1), #5b3bff); font-weight:800; color:white; }
+    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:10px; background:#000; color:#fff; font-weight:800; font-size:16px; }
+
+    .nav-link { color:var(--muted) !important; font-weight:700; margin-left:12px; }
+    .nav-link:hover { color:var(--text) !important; text-decoration:none; }
+
+    /* improved visible toggler */
+    .navbar-toggler {
+      border:1px solid var(--card-border);
+      background: transparent;
+      width:56px;
+      height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:8px;
+      padding:6px;
+    }
+    .navbar-toggler svg { width:22px; height:18px; display:block; }
+    .navbar-toggler svg rect { fill: var(--text); rx:2; }
 
     /* HERO */
-    .hero {
-      padding:64px 0 40px;
-      position:relative;
-      text-align:left;
-    }
-    .hero-grid { display:grid; grid-template-columns: 1fr 360px; gap:28px; align-items:start; }
-    .hero h1 { font-size: clamp(28px, 4.8vw, 44px); margin:0; font-weight:900; line-height:1.02;
-      background:linear-gradient(90deg,var(--accent-1),var(--accent-2),var(--accent-3));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
-    }
+    .hero { padding:40px 0 28px; position:relative; text-align:left; }
+    .hero-grid { display:grid; grid-template-columns: 1fr 320px; gap:24px; align-items:start; }
+    .hero h1 { font-size: clamp(26px, 5.2vw, 40px); margin:0; font-weight:800; color:var(--accent); line-height:1.02; }
     .hero p.lead { color:var(--muted); margin-top:8px; max-width:60ch; }
 
     /* search + filters */
-    .search-wrap { display:flex; gap:10px; align-items:center; margin-top:18px; }
-    .tag { padding:8px 12px; border-radius:999px; background: rgba(255,255,255,0.02); color:var(--muted); border:1px solid rgba(255,255,255,0.03); cursor:pointer; font-weight:700; }
-    .tag.active { background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); color:white; border:none; transform:translateY(-2px); box-shadow:0 12px 30px rgba(92,57,255,0.12); }
+    .search-wrap { display:flex; gap:10px; align-items:center; margin-top:18px; flex-wrap:wrap; }
+    .tag { padding:7px 10px; border-radius:999px; background: var(--panel); color:var(--muted); border:1px solid var(--card-border); cursor:pointer; font-weight:700; font-size:13px; }
+    .tag.active { background:var(--text); color:#fff; border-color:#000; }
 
     /* layout */
-    .main-grid { display:grid; grid-template-columns: 1fr 320px; gap:28px; margin-top:28px; align-items:start; }
+    .main-grid { display:grid; grid-template-columns: 1fr 320px; gap:24px; margin-top:24px; align-items:start; }
     .featured {
-      border-radius:14px; overflow:hidden; position:relative;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04); padding:18px;
+      border-radius:10px; overflow:hidden; position:relative; background:var(--panel); border:1px solid var(--card-border); padding:16px;
     }
     .featured .meta { display:flex; justify-content:space-between; align-items:center; gap:12px; color:var(--muted); font-weight:700; }
-    .featured img { width:100%; height:220px; object-fit:cover; border-radius:10px; margin-bottom:12px; }
+    .featured img { width:100%; height:220px; object-fit:cover; border-radius:8px; margin-bottom:12px; filter:grayscale(100%); }
 
-    .posts-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:18px; }
+    .posts-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
     .post-card {
-      border-radius:12px; padding:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04); transition:transform .28s ease, box-shadow .28s ease; display:flex; flex-direction:column; gap:10px;
+      border-radius:10px; padding:12px; background:var(--panel); border:1px solid var(--card-border); transition:transform .18s ease, box-shadow .18s ease; display:flex; flex-direction:column; gap:10px;
     }
-    .post-card:hover { transform: translateY(-8px); box-shadow: 0 28px 70px rgba(2,8,23,0.5); }
-    .post-card .thumb { width:100%; height:140px; object-fit:cover; border-radius:8px; }
-    .post-card .kicker { font-size:12px; color:var(--muted); font-weight:800; text-transform:uppercase; letter-spacing:0.8px; }
+    .post-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+    .post-card .thumb { width:100%; height:140px; object-fit:cover; border-radius:8px; filter:grayscale(100%); }
+    .post-card .kicker { font-size:12px; color:var(--muted); font-weight:700; text-transform:uppercase; letter-spacing:0.6px; }
     .post-card .title { font-weight:800; margin:0; color:var(--text); }
     .post-card .excerpt { color:var(--muted); margin-top:6px; flex:1; }
 
     /* sidebar */
     aside.sidebar { position:relative; }
-    .widget { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:14px; border:1px solid rgba(255,255,255,0.04); margin-bottom:14px; }
+    .widget { background:var(--panel); border-radius:10px; padding:12px; border:1px solid var(--card-border); margin-bottom:12px; }
     .popular-list { display:flex; flex-direction:column; gap:10px; }
-    .small-thumb { width:64px; height:48px; object-fit:cover; border-radius:8px; }
+    .small-thumb { width:64px; height:48px; object-fit:cover; border-radius:6px; filter:grayscale(100%); }
 
     /* pagination */
-    .pagination { display:flex; gap:8px; justify-content:center; margin-top:18px; }
+    .pagination { display:flex; gap:8px; justify-content:center; margin-top:16px; }
 
-    /* modal */
-    .modal-content { background: linear-gradient(180deg, rgba(12,16,24,0.96), rgba(8,12,20,0.96)); color:var(--muted); border-radius:12px; }
-
-    /* floating whatsapp */
+    /* floating whatsapp (monochrome) */
     .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; flex-direction:column; gap:12px; }
-    .float-wa .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background: linear-gradient(180deg,#25D366,#128C7E); color:white; border:none; box-shadow:0 12px 34px rgba(0,0,0,0.4); cursor:pointer; }
+    .float-wa .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:#000; color:#fff; border:none; box-shadow:0 8px 22px rgba(0,0,0,0.08); cursor:pointer; }
+
+    /* social icons in nav */
+    .nav-social { display:flex; gap:10px; align-items:center; margin-left:12px; }
+    .nav-social a { color:var(--muted); font-size:18px; }
+    .nav-social a:hover { color:var(--text); }
 
     /* responsive */
     @media (max-width:992px){
       .hero-grid { grid-template-columns: 1fr; }
       .main-grid { grid-template-columns: 1fr; }
-      .featured img { height:200px; }
-      .orb.o1 { display:none; }
+      .featured img { height:180px; }
     }
 
-    /* reduced motion */
-    @media (prefers-reduced-motion: reduce){
-      * { transition: none !important; animation: none !important; }
-    }
+    /* accessibility focus */
+    .post-card:focus { outline:3px solid rgba(0,0,0,0.08); transform:translateY(-4px); }
 
+    /* small utilities */
+    .muted { color:var(--muted); }
   </style>
 </head>
 <body>
-  <!-- ORBS -->
-  <div class="orb o1" aria-hidden="true"></div>
-  <div class="orb o2" aria-hidden="true"></div>
-  <div class="orb o3" aria-hidden="true"></div>
-
   <!-- NAV -->
-  <nav class="blog-nav">
+  <nav class="blog-nav navbar navbar-expand-lg">
     <div class="container-xl d-flex align-items-center justify-content-between">
-      <a class="brand" href="#" aria-label="JK Consulting home">
-        <div class="brand-mark">JK</div>
-        <div>
-          <div style="font-weight:800">JK Consulting</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:-4px">Career Coaching & Resumes</div>
+      <a class="brand d-flex align-items-center" href="index.html" aria-label="JK Konsult home">
+        <div class="brand-mark" aria-hidden="true">JK</div>
+        <div style="margin-left:8px">
+          <div style="font-weight:800; font-size:16px; color:var(--text)">JK Konsult</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Career Coaching & Resumes</div>
         </div>
       </a>
 
-      <div class="d-flex gap-2 align-items-center">
-        <a class="btn btn-outline-light btn-sm" href="/services.html">Services</a>
-        <a class="btn btn-outline-light btn-sm" href="/why-choose-us.html">Why choose us</a>
+      <!-- visible toggler -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#siteNav" aria-controls="siteNav" aria-expanded="false" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <rect x="0" y="0" width="24" height="2"></rect>
+          <rect x="0" y="8" width="24" height="2"></rect>
+          <rect x="0" y="16" width="24" height="2"></rect>
+        </svg>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="siteNav">
+        <ul class="navbar-nav align-items-lg-center me-3">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="why.html">Why</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link active" href="blog.html">Blog</a></li>
+        </ul>
+
+        <div class="d-flex align-items-center">
+          <div class="nav-social me-3">
+            <a href="https://www.linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="ms-1" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+
+          <button id="bookTop" class="btn btn-sm" style="border:1px solid var(--card-border); background:#000; color:#fff; font-weight:700; border-radius:8px; padding:8px 12px;">Book a Call</button>
+        </div>
       </div>
     </div>
   </nav>
@@ -150,12 +161,12 @@
     <section class="hero">
       <div class="hero-grid">
         <div>
-          <div class="micro">Insights & Advice</div>
+          <div class="micro muted" style="font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px">Insights & Advice</div>
           <h1 id="heroHeadline">Career coaching that transforms your story into offers.</h1>
-          <p class="lead">Articles on resumes, interview prep, negotiation, career strategy and hiring — practical, evidence-based, and written for busy professionals.</p>
+          <p class="lead muted">Articles on resumes, interview prep, negotiation, career strategy and hiring — practical, evidence-based, and written for busy professionals.</p>
 
-          <div class="search-wrap" style="gap:12px;">
-            <input id="searchInput" class="form-control" type="search" placeholder="Search articles (e.g., negotiation, resume, interviews)" aria-label="Search articles" style="max-width:560px;">
+          <div class="search-wrap">
+            <input id="searchInput" class="form-control" type="search" placeholder="Search articles (e.g., negotiation, resume, interviews)" aria-label="Search articles" style="max-width:560px; background:var(--panel); border:1px solid var(--card-border); color:var(--text)">
             <div id="tagFilters" class="d-flex flex-wrap" style="gap:8px;">
               <!-- tags injected by JS -->
             </div>
@@ -164,26 +175,22 @@
 
         <aside class="sidebar">
           <div class="widget">
-            <strong style="display:block;margin-bottom:8px">Subscribe</strong>
-            <p style="margin:0 0 10px;color:var(--muted)">Get our best posts by email.</p>
+            <strong style="display:block;margin-bottom:8px; color:var(--text)">Subscribe</strong>
+            <p style="margin:0 0 10px;color:var(--muted)">Get best posts by email.</p>
             <div class="d-flex gap-2">
-              <input id="subEmail" class="form-control form-control-sm" placeholder="Email address" aria-label="Email address">
-              <button id="subBtn" class="btn btn-primary btn-sm">Subscribe</button>
+              <input id="subEmail" class="form-control form-control-sm" placeholder="Email address" aria-label="Email address" style="background:var(--panel); border:1px solid var(--card-border); color:var(--text)">
+              <button id="subBtn" class="btn" style="background:#000; color:#fff; font-weight:700; border-radius:8px; padding:6px 10px;">Subscribe</button>
             </div>
           </div>
 
           <div class="widget">
-            <strong style="display:block;margin-bottom:8px">Popular</strong>
-            <div class="popular-list" id="popularList">
-              <!-- injected -->
-            </div>
+            <strong style="display:block;margin-bottom:8px; color:var(--text)">Popular</strong>
+            <div class="popular-list" id="popularList"></div>
           </div>
 
           <div class="widget">
-            <strong style="display:block;margin-bottom:8px">Categories</strong>
-            <div id="cats" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;">
-              <!-- injected -->
-            </div>
+            <strong style="display:block;margin-bottom:8px; color:var(--text)">Categories</strong>
+            <div id="cats" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;"></div>
           </div>
         </aside>
       </div>
@@ -194,49 +201,43 @@
       <div>
         <div class="featured" id="featuredArticle" role="article" aria-label="Featured article">
           <img src="https://via.placeholder.com/900x420?text=Featured+Article" alt="Featured: How to craft a resume that wins interviews">
-          <div class="meta">
+          <div class="meta" style="margin-top:8px">
             <div class="muted">Resume • 6 mins</div>
-            <div><button id="featuredRead" class="btn btn-outline-light btn-sm">Read</button></div>
+            <div><button id="featuredRead" class="btn btn-sm" style="border:1px solid var(--card-border); background:transparent; color:var(--text);">Read</button></div>
           </div>
-          <h3 style="margin-top:12px">How to craft a resume that wins interviews (and avoids ATS traps)</h3>
+          <h3 style="margin-top:12px; color:var(--text)">How to craft a resume that wins interviews (and avoids ATS traps)</h3>
           <p class="muted" style="margin-top:8px">A practical, recruiter-oriented approach to making your experience read like impact rather than tasks.</p>
         </div>
 
-        <div style="margin-top:22px;">
+        <div style="margin-top:20px;">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 id="postsHeading" style="margin:0">Latest posts</h2>
+            <h2 id="postsHeading" style="margin:0; color:var(--text)">Latest posts</h2>
             <div class="muted">Showing <span id="shownCount">0</span> of <span id="totalCount">0</span></div>
           </div>
 
-          <div id="postsGrid" class="posts-grid" role="list">
-            <!-- posts injected here -->
-          </div>
+          <div id="postsGrid" class="posts-grid" role="list"></div>
 
-          <div class="pagination" id="pagination" aria-label="Pagination controls" style="margin-top:18px;">
-            <!-- pagination injected -->
-          </div>
+          <div class="pagination" id="pagination" aria-label="Pagination controls"></div>
         </div>
       </div>
 
       <!-- SIDEBAR secondary -->
       <aside>
         <div class="widget">
-          <strong style="display:block;margin-bottom:8px">About the blog</strong>
+          <strong style="display:block;margin-bottom:8px; color:var(--text)">About the blog</strong>
           <p class="muted" style="margin:0">Actionable posts from expert coaches and recruiters — practical templates, negotiation scripts and interview frameworks.</p>
         </div>
 
         <div class="widget">
-          <strong style="display:block;margin-bottom:8px">Tags</strong>
-          <div id="sidebarTags" style="display:flex; gap:8px; flex-wrap:wrap;">
-            <!-- injected -->
-          </div>
+          <strong style="display:block;margin-bottom:8px; color:var(--text)">Tags</strong>
+          <div id="sidebarTags" style="display:flex; gap:8px; flex-wrap:wrap;"></div>
         </div>
 
         <div class="widget">
-          <strong style="display:block;margin-bottom:8px">Contact</strong>
+          <strong style="display:block;margin-bottom:8px; color:var(--text)">Contact</strong>
           <p style="margin:0;color:var(--muted)">Quick questions? Message us on WhatsApp or book a consult.</p>
           <div style="margin-top:10px;">
-            <button id="waContact" class="btn btn-primary btn-sm">Chat on WhatsApp</button>
+            <button id="waContact" class="btn" style="background:#000; color:#fff; font-weight:700; border-radius:8px; padding:6px 10px;">Chat on WhatsApp</button>
           </div>
         </div>
       </aside>
@@ -248,14 +249,14 @@
         <div class="modal-content">
           <div class="modal-header border-0">
             <h5 class="modal-title" id="postModalTitle">Article</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <img id="postModalImg" src="" alt="" style="width:100%; height:280px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+            <img id="postModalImg" src="" alt="" style="width:100%; height:280px; object-fit:cover; border-radius:8px; margin-bottom:12px; filter:grayscale(100%)">
             <p id="postModalBody" style="color:var(--muted)"></p>
             <div class="text-end">
-              <button id="modalShare" class="btn btn-outline-light btn-sm">Share</button>
-              <button id="modalWhatsApp" class="btn btn-primary btn-sm">Book / Chat</button>
+              <button id="modalShare" class="btn btn-sm" style="border:1px solid var(--card-border); background:transparent; color:var(--text);">Share</button>
+              <button id="modalWhatsApp" class="btn btn-sm" style="background:#000; color:#fff; font-weight:700; margin-left:8px;">Book / Chat</button>
             </div>
           </div>
         </div>
@@ -266,7 +267,7 @@
 
   <!-- floating WhatsApp -->
   <div class="float-wa" aria-hidden="false">
-    <button id="floatWaBtn" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><i class="fab fa-whatsapp fa-lg"></i></button>
+    <button id="floatWaBtn" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><i class="fab fa-whatsapp fa-lg" aria-hidden="true"></i></button>
   </div>
 
   <!-- Bootstrap JS -->
@@ -275,14 +276,17 @@
   <script>
     // ====== CONFIG ======
     const WHATSAPP_PHONE = '2349065795183'; // no leading +
-    const WA_BASE = 'Hi — I would like to discuss JK Consulting blog or services.';
+    const WA_BASE = 'Hi — I would like to discuss JK Konsult blog or services.';
 
     function openWhatsApp(msg){
       const t = encodeURIComponent(msg || WA_BASE);
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${t}`, '_blank');
     }
 
-    // ====== SAMPLE POSTS (replace with your real content or fetch from CMS) ======
+    // NAV book button
+    document.getElementById('bookTop').addEventListener('click', ()=> openWhatsApp('Hi — I would like to book a consult.'));
+
+    // ====== SAMPLE POSTS (replace with CMS) ======
     const POSTS = [
       { id:1, title:"How to craft a resume that wins interviews", excerpt:"Write for recruiters: lead with achievements, quantify impact, and avoid ATS traps.", img:"https://via.placeholder.com/900x420?text=Resume+Tips", category:"Resume", tags:["resume","writing"], date:"2024-07-14", read:6 },
       { id:2, title:"Negotiation scripts that increase offer value", excerpt:"Exact phrases and flow to use when negotiating salary and benefits.", img:"https://via.placeholder.com/900x420?text=Negotiation", category:"Negotiation", tags:["negotiation","offers"], date:"2024-06-22", read:7 },
@@ -292,14 +296,11 @@
       { id:6, title:"Email outreach templates that actually get replies", excerpt:"Short, relevant templates for contacting recruiters and hiring managers.", img:"https://via.placeholder.com/900x420?text=Outreach", category:"Outreach", tags:["email","networking"], date:"2024-02-28", read:4 },
       { id:7, title:"Senior IC to Manager: making the case for promotion", excerpt:"Data-backed approach to position yourself for an internal promotion.", img:"https://via.placeholder.com/900x420?text=Promotion", category:"Career", tags:["promotion","career"], date:"2024-01-21", read:6 },
       { id:8, title:"Mock interview toolkit: record, review, iterate", excerpt:"How to structure mocks and use recordings to accelerate improvement.", img:"https://via.placeholder.com/900x420?text=Mock+Interviews", category:"Interview", tags:["interview","practice"], date:"2023-12-11", read:5 },
-      // add more posts as needed...
     ];
 
-    // derived tag and category sets
     const TAGS = Array.from(new Set(POSTS.flatMap(p => p.tags))).sort();
     const CATS = Array.from(new Set(POSTS.map(p => p.category))).sort();
 
-    // pagination
     const PAGE_SIZE = 6;
     let currentPage = 1;
     let activeTag = 'all';
@@ -315,20 +316,16 @@
     const catsEl = document.getElementById('cats');
     const searchInput = document.getElementById('searchInput');
 
-    // bootstrap modal instances
     let postModalEl = document.getElementById('postModal');
     const postModal = new bootstrap.Modal(postModalEl);
 
-    // helper: format date
     function fmtDate(d){ const dt = new Date(d); return dt.toLocaleDateString(); }
 
-    // render helper
     function renderTags(){
-      // top tag filters (all + tags)
       tagFiltersEl.innerHTML = '';
       const allBtn = document.createElement('button'); allBtn.className='tag active'; allBtn.textContent='All'; allBtn.dataset.tag='all';
+      allBtn.addEventListener('click', ()=> setTag('all'));
       tagFiltersEl.appendChild(allBtn);
-      allBtn.addEventListener('click', ()=>{ setTag('all'); });
 
       TAGS.forEach(t => {
         const b = document.createElement('button'); b.className='tag'; b.textContent = t; b.dataset.tag = t;
@@ -336,7 +333,6 @@
         tagFiltersEl.appendChild(b);
       });
 
-      // sidebar tag chips
       sidebarTagsEl.innerHTML = '';
       TAGS.forEach(t => {
         const s = document.createElement('button'); s.className='tag'; s.textContent = t; s.dataset.tag=t;
@@ -344,7 +340,6 @@
         sidebarTagsEl.appendChild(s);
       });
 
-      // categories
       catsEl.innerHTML = '';
       CATS.forEach(c => {
         const el = document.createElement('button'); el.className='tag'; el.textContent = c; el.addEventListener('click', ()=> setTag(c, true));
@@ -353,22 +348,17 @@
     }
 
     function setTag(tag, treatAsCategory=false){
-      // if clicked category, convert to filter by category
       activeTag = tag;
       currentPage = 1;
-      // update active classes
       document.querySelectorAll('#tagFilters .tag').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
       document.querySelectorAll('#sidebarTags .tag').forEach(b => b.classList.toggle('active', b.dataset.tag === tag));
-      // if category filter (treatAsCategory true), mark category buttons active (just visual)
-      // re-render
       renderPosts();
     }
 
     function filteredPosts(){
       const q = (searchInput.value || '').trim().toLowerCase();
-      let items = POSTS.slice(); // copy
+      let items = POSTS.slice();
       if (activeTag && activeTag !== 'all') {
-        // match both tag and category names
         items = items.filter(p => p.tags.includes(activeTag) || p.category === activeTag);
       }
       if (q) {
@@ -380,11 +370,9 @@
     function renderPosts(){
       const items = filteredPosts();
       totalCountEl.textContent = items.length;
-      // pagination
       const start = (currentPage - 1) * PAGE_SIZE;
       const pageItems = items.slice(start, start + PAGE_SIZE);
 
-      // render
       postsGrid.innerHTML = '';
       pageItems.forEach(p => {
         const card = document.createElement('article');
@@ -400,57 +388,48 @@
               ${p.tags.map(t => `<span class="tag" style="font-size:12px;padding:6px 8px;">${t}</span>`).join(' ')}
             </div>
             <div>
-              <button class="btn btn-outline-light btn-sm readBtn" data-id="${p.id}">Read</button>
+              <button class="btn btn-sm" style="border:1px solid var(--card-border); background:transparent; color:var(--text);" data-id="${p.id}" onclick="openPostFromBtn(event)">Read</button>
             </div>
           </div>
         `;
         postsGrid.appendChild(card);
-
-        // keyboard: Enter opens read
-        card.addEventListener('keydown', (e)=> { if (e.key === 'Enter') card.querySelector('.readBtn')?.click(); });
+        card.addEventListener('keydown', (e)=> { if (e.key === 'Enter') card.querySelector('button')?.click(); });
       });
 
       shownCountEl.textContent = pageItems.length;
 
-      // pagination controls
       const pageCount = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
       paginationEl.innerHTML = '';
       if (pageCount > 1) {
         for (let i=1;i<=pageCount;i++){
-          const b = document.createElement('button'); b.className='btn btn-outline-light btn-sm'; b.textContent = i;
-          if (i === currentPage) b.classList.add('active');
+          const b = document.createElement('button'); b.className='btn btn-sm'; b.style.border='1px solid var(--card-border)'; b.style.background='transparent'; b.textContent = i;
+          if (i === currentPage) { b.style.background = '#000'; b.style.color = '#fff'; }
           b.addEventListener('click', ()=>{ currentPage = i; renderPosts(); window.scrollTo({top:document.getElementById('postsHeading').offsetTop - 80, behavior:'smooth'}); });
           paginationEl.appendChild(b);
         }
       }
 
-      // wire read buttons
-      document.querySelectorAll('.readBtn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          const id = +btn.dataset.id;
-          const post = POSTS.find(x => x.id === id);
-          if (post) openPostModal(post);
-        });
-      });
-
-      // animate cards
       animateCards();
       renderPopular();
     }
 
-    // featured read button
+    function openPostFromBtn(e){
+      const id = +e.currentTarget.dataset.id;
+      const post = POSTS.find(x => x.id === id);
+      if (post) openPostModal(post);
+    }
+
     document.getElementById('featuredRead').addEventListener('click', ()=> { openPostModal(POSTS[0]); });
 
-    // render popular list (top by read time as placeholder)
     function renderPopular(){
       const top = POSTS.slice(0,4);
       popularListEl.innerHTML = '';
       top.forEach(p => {
-        const el = document.createElement('div'); el.style.display='flex'; el.style.gap='10px'; el.style.alignItems='center';
+        const el = document.createElement('div'); el.style.display='flex'; el.style.gap='10px'; el.style.alignItems='center'; el.style.cursor='pointer';
         el.innerHTML = `
           <img class="small-thumb" src="${p.img}" alt="${p.title}">
           <div style="flex:1">
-            <div style="font-weight:800">${p.title}</div>
+            <div style="font-weight:800; color:var(--text)">${p.title}</div>
             <div style="font-size:13px;color:var(--muted)">${fmtDate(p.date)}</div>
           </div>
         `;
@@ -459,7 +438,6 @@
       });
     }
 
-    // open modal
     function openPostModal(post){
       document.getElementById('postModalTitle').textContent = post.title;
       document.getElementById('postModalImg').src = post.img;
@@ -470,10 +448,8 @@
       postModal.show();
     }
 
-    // search / filters wiring
     searchInput.addEventListener('input', ()=> { currentPage = 1; renderPosts(); });
 
-    // subscribe simulation
     document.getElementById('subBtn').addEventListener('click', ()=> {
       const email = document.getElementById('subEmail').value.trim();
       if (!email) { alert('Enter your email'); return; }
@@ -481,62 +457,48 @@
       document.getElementById('subEmail').value='';
     });
 
-    // WA buttons
     document.getElementById('waContact').addEventListener('click', ()=> openWhatsApp());
     document.getElementById('floatWaBtn').addEventListener('click', ()=> openWhatsApp('Hi — I have a question about careers and coaching.'));
 
-    // keyboard accessibility for modal buttons
     document.querySelectorAll('button').forEach(b => b.addEventListener('keydown', (e)=> { if (e.key === 'Enter') b.click(); }));
 
-    // animations
+    // simple animations (subtle)
     function animateHero(){
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduced) return;
-      gsap.to('.orb.o1', { x: 90, y: 18, duration: 12, repeat:-1, yoyo:true, ease:'sine.inOut' });
-      gsap.to('.orb.o2', { x: -50, y: -24, duration:10, repeat:-1, yoyo:true, ease:'sine.inOut' });
-      gsap.to('.orb.o3', { x: 30, y: 14, duration:14, repeat:-1, yoyo:true, ease:'sine.inOut' });
-      gsap.from('#heroHeadline', { y:24, opacity:0, duration:0.9, ease:'power3.out' });
+      // subtle fade in
+      document.getElementById('heroHeadline').style.opacity = 0;
+      setTimeout(()=> { document.getElementById('heroHeadline').style.transition = 'opacity .6s ease, transform .6s ease'; document.getElementById('heroHeadline').style.opacity = 1; }, 120);
     }
 
     function animateCards(){
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) return;
-      gsap.utils.toArray('.post-card').forEach((el, idx) => {
-        gsap.fromTo(el, { y: 18, opacity:0 }, { y:0, opacity:1, duration:0.7, ease:'power3.out', delay: idx*0.04 });
-      });
+      // simple staggered reveal
+      const cards = document.querySelectorAll('.post-card');
+      cards.forEach((c,i) => { c.style.opacity = 0; setTimeout(()=> { c.style.transition = 'opacity .4s ease, transform .4s ease'; c.style.opacity = 1; }, 80 + i*40); });
     }
 
-    // initial render
     (function init(){
-      // render tags UI
-      renderTags();
+      // render tags + posts
+      // derived tag/category sets created earlier
+      const TAGS = Array.from(new Set(POSTS.flatMap(p => p.tags))).sort();
+      const CATS = Array.from(new Set(POSTS.map(p => p.category))).sort();
+      // small local override to use these sets in functions above:
+      window.TAGS = TAGS;
+      window.CATS = CATS;
 
-      // render posts
+      renderTags();
       totalCountEl.textContent = POSTS.length;
       renderPosts();
-
-      // animate hero/orbs
       animateHero();
-
-      // show counts
       shownCountEl.textContent = Math.min(POSTS.length, PAGE_SIZE);
 
-      // set featured image and meta (first post)
+      // set featured post from POSTS[0]
       const feat = POSTS[0];
       if (feat) {
         document.querySelector('#featuredArticle img').src = feat.img;
         document.querySelector('#featuredArticle h3').textContent = feat.title;
-        document.querySelector('#featuredArticle .meta .muted')?.textContent;
       }
     })();
-
-    // small improvement: highlight tag button visually when clicked elsewhere
-    document.addEventListener('click', (e)=>{
-      if (e.target.classList.contains('tag') && e.target.dataset.tag) {
-        document.querySelectorAll('.tag').forEach(t=> t.classList.toggle('active', t === e.target));
-      }
-    });
-
   </script>
 </body>
 </html>

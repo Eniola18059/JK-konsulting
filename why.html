@@ -3,227 +3,192 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Why Choose JK Consulting — Career Coaching & Resumes</title>
+  <title>Why Choose JK Konsult — Career Coaching & Resumes</title>
+
+  <!-- Poppins (site font) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Inter font -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- GSAP (needed for animations) -->
+  <!-- GSAP (kept for subtle animation, respects reduced-motion) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     :root{
-      --bg:#040514;
-      --panel:#0f1624;
-      --muted:#bfcbdc;
-      --accent-1:#7c5cff;
-      --accent-2:#00d1ff;
-      --accent-3:#ffd166;
-      --success:#25D366;
-      --glass: rgba(255,255,255,0.03);
-      --text:#eef7ff;
+      --bg: #ffffff;         /* white page background */
+      --panel: #fafafa;
+      --text: #0b0b0b;       /* primary text — near-black */
+      --muted: #666666;      /* secondary text */
+      --muted-2: #8a8a8a;
+      --white: #ffffff;
+      --border: #e6e6e6;
+      --accent: #000000;     /* black accent */
+      --glass: rgba(0,0,0,0.04);
     }
 
-    html,body{height:100%; margin:0; font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial; 
-      background:
-        radial-gradient(1000px 500px at 10% 10%, rgba(124,92,255,0.06), transparent),
-        linear-gradient(180deg,var(--bg) 0%, #071026 70%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:'Poppins', Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    a { color:inherit; text-decoration:none; }
+
+    .container-lg { max-width:1100px; margin-left:auto; margin-right:auto; padding-left:18px; padding-right:18px; }
+
+    /* NAV */
+    nav.navbar { background:transparent; border-bottom:1px solid var(--border); padding:.6rem 0; }
+    .brand { display:flex; align-items:center; gap:.6rem; color:var(--text); text-decoration:none; }
+    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--text); color:var(--white); font-weight:800; }
+    .nav-link { color:var(--muted) !important; font-weight:600; margin-left:.6rem; }
+    .nav-link:hover { color:var(--text) !important; text-decoration:none; }
+
+    /* Improved toggler: white bars on black small square */
+    .navbar-toggler {
+      border:1px solid rgba(0,0,0,0.06);
+      background: rgba(0,0,0,0.85);
+      width:54px;
+      height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:10px;
+      padding:6px;
     }
+    .navbar-toggler svg { width:22px; height:18px; display:block; }
+    .navbar-toggler svg rect { fill: #fff; rx:2; }
 
-    .container-lg { max-width:1200px; margin-left:auto; margin-right:auto; padding-left:18px; padding-right:18px; }
+    /* HERO */
+    header.hero { padding:80px 0 40px; position:relative; overflow:visible; text-align:center; background:transparent; }
+    .micro { font-size:13px; font-weight:800; color:var(--muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:12px; display:inline-block; }
 
-    /* ---------- HERO ---------- */
-    header.hero {
-      padding:90px 0 48px;
-      position:relative;
-      overflow:visible;
-    }
-
-    /* decorative orbs behind hero */
-    .orb { position:absolute; border-radius:50%; filter: blur(72px); opacity:0.85; pointer-events:none; mix-blend-mode:screen; z-index:0; }
-    .orb.o1 { width:460px; height:460px; left:-120px; top:-80px; background: radial-gradient(circle at 20% 30%, rgba(124,92,255,0.95), rgba(124,92,255,0.06)); }
-    .orb.o2 { width:340px; height:340px; right:-80px; top:0px; background: radial-gradient(circle at 60% 70%, rgba(0,209,255,0.9), rgba(0,209,255,0.06)); }
-    .orb.o3 { width:240px; height:240px; left:18%; bottom:-90px; background: radial-gradient(circle at 50% 50%, rgba(255,209,102,0.9), rgba(255,209,102,0.06)); }
-    header.hero .container-lg { position:relative; z-index:1; }
-
-    .micro { font-size:13.5px; font-weight:900; color:var(--accent-2); letter-spacing:1px; text-transform:uppercase; margin-bottom:14px; display:inline-block; }
-
-    /* headline styling: gradient text */
     h1.hero-title {
-      font-size: clamp(34px, 6.4vw, 64px);
-      font-weight:900;
+      font-size: clamp(28px, 5.2vw, 56px);
+      font-weight:800;
       line-height:1.02;
       margin:0 0 12px 0;
+      color:var(--text);
       display:inline-block;
-      background: linear-gradient(90deg, var(--accent-1) 0%, var(--accent-2) 40%, var(--accent-3) 75%, #ff6b6b 100%);
-      background-size: 300% 100%;
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      will-change: background-position, transform;
     }
-
-    /* animated underline accent */
-    h1.hero-title::after {
-      content: "";
-      display:block;
-      height:7px;
-      width:36%;
-      margin-top:12px;
-      border-radius:8px;
-      background: linear-gradient(90deg, rgba(124,92,255,0.95), rgba(0,209,255,0.85));
-      transform-origin:left center;
-      animation: underlineFloat 2.6s ease-in-out infinite;
-    }
-    @keyframes underlineFloat {
-      0%   { transform: translateX(-8px) scaleX(0.95); opacity:0.82; }
-      50%  { transform: translateX(6px)  scaleX(1.05); opacity:1; }
-      100% { transform: translateX(-8px) scaleX(0.95); opacity:0.82; }
-    }
-
-    /* important: spans are visible by default to avoid flicker/no-display */
-    h1.hero-title span { display:inline-block; margin-right:8px; opacity:1; transform:none; }
-
-    /* highlight words receive extra weight and will animate (bouncing) */
-    h1.hero-title .highlight { font-weight:900; }
-
     p.lead { color:var(--muted); margin-top:12px; max-width:70ch; margin-left:auto; margin-right:auto; font-weight:600; }
 
     .cta-row { display:flex; gap:12px; justify-content:center; margin-top:18px; flex-wrap:wrap; }
+    .btn-primary { background:var(--text); color:var(--white); border:none; padding:12px 18px; border-radius:10px; font-weight:800; }
+    .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text); padding:11px 16px; border-radius:10px; }
 
-    .btn-primary {
-      background: linear-gradient(180deg,var(--accent-1), #5b3bff);
-      border:none; padding:12px 18px; border-radius:12px; font-weight:800; box-shadow:0 10px 30px rgba(92,57,255,0.12);
-    }
-    .btn-ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text); padding:11px 16px; border-radius:12px; }
-
-    /* ---------- FEATURES ---------- */
-    .features { padding:46px 0; }
-    .features-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap:18px; align-items:stretch; max-width:1100px; margin:auto; }
+    /* FEATURES */
+    .features { padding:36px 0; }
+    .features-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap:18px; align-items:stretch; max-width:1100px; margin:auto; }
     .feature-card {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04);
-      padding:18px; border-radius:14px; min-height:150px; transition: transform .36s ease, box-shadow .36s ease;
+      background:var(--white);
+      border:1px solid var(--border);
+      padding:18px; border-radius:12px; min-height:140px; transition: transform .24s ease, box-shadow .24s ease;
       display:flex; flex-direction:column; gap:10px;
     }
-    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(2,8,23,0.45); }
-    .feature-ico { width:56px; height:56px; display:grid; place-items:center; border-radius:12px; font-size:18px; color:var(--accent-1); background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.03); }
+    .feature-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
+    .feature-ico { width:56px; height:56px; display:grid; place-items:center; border-radius:10px; font-size:18px; color:var(--accent); background:var(--glass); border:1px solid rgba(0,0,0,0.04); }
 
-    /* ---------- STATS ---------- */
+    /* STATS */
     .stats { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:22px; }
-    .stat { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:14px 18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); min-width:140px; text-align:center; }
-    .stat .num { font-size:1.6rem; font-weight:900; color:var(--accent-1); }
-    .stat .lab { font-weight:700; color:var(--muted); margin-top:6px; }
+    .stat { background:var(--white); padding:14px 18px; border-radius:10px; border:1px solid var(--border); min-width:120px; text-align:center; }
+    .num { font-size:1.4rem; font-weight:800; color:var(--text); }
+    .lab { font-weight:700; color:var(--muted); margin-top:6px; font-size:.95rem; }
 
-    /* ---------- PROCESS ---------- */
-    .process { padding:46px 0; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-top:1px solid rgba(255,255,255,0.02); }
-    .process-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:18px; max-width:1100px; margin:auto; }
-    .step { padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); background:transparent; min-height:140px; display:flex; flex-direction:column; gap:8px; }
+    /* PROCESS */
+    .process { padding:36px 0; border-top:1px solid var(--border); }
+    .process-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap:18px; max-width:1100px; margin:auto; }
+    .step { padding:16px; border-radius:10px; border:1px solid var(--border); background:var(--white); min-height:120px; display:flex; flex-direction:column; gap:8px; }
 
-    /* ---------- TEAM ---------- */
-    .team { padding:46px 0; }
-    .team-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:18px; max-width:1100px; margin:auto; }
-    .teammember { background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); padding:16px; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.03); }
+    /* TEAM */
+    .team { padding:36px 0; }
+    .team-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:18px; max-width:1100px; margin:auto; }
+    .teammember { background:var(--white); padding:14px; border-radius:10px; text-align:center; border:1px solid var(--border); }
     .teammember img { width:84px; height:84px; border-radius:999px; object-fit:cover; display:block; margin:0 auto 10px auto; }
 
-    /* ---------- TESTIMONIALS ---------- */
-    .testimonials { padding:46px 0; }
-    .testi-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.03); min-height:130px; }
+    /* TESTIMONIALS */
+    .testimonials { padding:36px 0; }
+    .testi-card { background:var(--white); border-radius:10px; padding:18px; border:1px solid var(--border); min-height:110px; color:var(--muted); }
 
-    /* ---------- FAQ ---------- */
-    .faq { padding:46px 0; }
+    /* FAQ */
+    .faq { padding:36px 0; }
     .accordion-button { background:transparent; color:var(--text); font-weight:700; border-radius:8px; }
+    .accordion-body { color:var(--muted); font-weight:600; background:var(--white); border-top:1px solid var(--border); }
 
-    /* ---------- CTA ---------- */
-    .cta { padding:46px 0; text-align:center; }
-
-    /* ---------- FLOATING WA ---------- */
+    /* CTA & Footer */
+    .cta { padding:36px 0; text-align:center; }
     .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:grid; gap:10px; }
-    .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:linear-gradient(180deg,#25D366,#128C7E); color:white; box-shadow:0 10px 30px rgba(0,0,0,0.45); border:none; cursor:pointer; }
+    .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:var(--text); color:var(--white); box-shadow:0 10px 30px rgba(0,0,0,0.08); border:none; cursor:pointer; }
 
-    /* responsiveness */
+    footer { padding:28px 0; border-top:1px solid var(--border); color:var(--muted); margin-top:34px; text-align:center; background:transparent; }
+    .footer-sub { display:flex; gap:10px; align-items:center; justify-content:center; margin-top:12px; flex-wrap:wrap; }
+
+    .subscribe-input { max-width:320px; width:100%; border:1px solid var(--border); padding:8px 10px; border-radius:8px; }
+
     @media (max-width:900px){
-      header.hero { padding:60px 0 36px; }
+      header.hero { padding:40px 0 28px; }
       .feature-ico { width:48px; height:48px; }
-      .orb.o1 { display:none; }
     }
 
-    /* reduced motion */
     @media (prefers-reduced-motion: reduce){
       .feature-card, .teammember, .step { transition:none !important; }
       *[data-animate] { animation:none !important; }
-      h1.hero-title::after { animation:none !important; }
     }
 
     .muted { color:var(--muted); }
-    .micro-inline { display:inline-block; }
   </style>
 </head>
 <body>
-
-  <header class="hero">
-    <div class="orb o1" aria-hidden="true"></div>
-    <div class="orb o2" aria-hidden="true"></div>
-    <div class="orb o3" aria-hidden="true"></div>
-
+  <!-- NAV -->
+  <nav class="navbar navbar-expand-lg">
     <div class="container-lg">
-      <div class="micro">Why choose JK Consulting</div>
+      <a class="brand" href="index.html" aria-label="JK Konsult Home">
+        <div class="brand-mark" aria-hidden="true">JK</div>
+        <div style="line-height:1;">
+          <div style="font-weight:700; color:var(--text);">JK Konsult</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Career Coaching & Resumes</div>
+        </div>
+      </a>
 
-      <!-- THE LINE: plain HTML — will always be visible -->
-     <h1 style="
-    font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
-    font-weight: 900;
-    font-size: clamp(28px, 5.5vw, 56px);
-    line-height: 1.1;
-    margin: 0;
-    text-align: center;
-    letter-spacing: -0.5px;
-    display: inline-block;
-    background: linear-gradient(90deg, #7c5cff 0%, #00d1ff 40%, #ffd166 75%, #ff6b6b 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: 0 5px 25px rgba(0,0,0,0.35);
-  ">
-    Career coaching that
-    <span style="
-      display:inline-block;
-      font-weight:900;
-      margin: 0 6px;
-      background: linear-gradient(90deg, #ffd166 0%, #ff6b6b 60%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    ">transforms</span>
-    your story into
-    <span style="
-      display:inline-block;
-      font-weight:900;
-      margin-left:6px;
-      background: linear-gradient(90deg, #7c5cff 0%, #00d1ff 70%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    ">offers</span>.
-  </h1>
+      <!-- high contrast toggler -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <rect x="0" y="0" width="24" height="2"></rect>
+          <rect x="0" y="8" width="24" height="2"></rect>
+          <rect x="0" y="16" width="24" height="2"></rect>
+        </svg>
+      </button>
 
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link active" href="why.html">Why</a></li>
+          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+          <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+          <li class="nav-item ms-3"><button id="bookTop" class="btn btn-ghost">Book a Call</button></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container-lg">
+      <div class="micro">Why choose JK Konsult</div>
+
+      <h1 id="heroTitle" class="hero-title">
+        Career coaching that <strong style="font-weight:800;">transforms</strong> your story into <strong style="font-weight:800;">offers</strong>.
+      </h1>
 
       <p class="lead">We combine recruiter insight, writing craft and negotiation science to deliver measurable outcomes — more interviews, stronger offers, faster.</p>
 
       <div class="cta-row">
         <button class="btn btn-primary" id="bookHero">Book a free consult</button>
-        <a href="service.html"><button class="btn btn-ghost" id="viewServices">View services</button></a>
+        <button class="btn btn-ghost" id="viewServices">View services</button>
       </div>
 
-      <div class="stats" aria-hidden="false">
+      <div class="stats" aria-hidden="false" style="margin-top:20px">
         <div class="stat">
           <div class="num" data-target="1200">0</div>
           <div class="lab">Happy clients</div>
@@ -244,7 +209,7 @@
   <section class="features" aria-labelledby="featuresHeading">
     <div class="container-lg">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="featuresHeading" style="margin:0">What sets us apart</h2>
+        <h2 id="featuresHeading" style="margin:0; color:var(--text)">What sets us apart</h2>
         <div class="muted">Transparent • Evidence-based • Human</div>
       </div>
 
@@ -253,8 +218,8 @@
           <div class="d-flex gap-3 align-items-start">
             <div class="feature-ico"><i class="fa-solid fa-bolt"></i></div>
             <div>
-              <h3 class="feature-title">Fast Turnaround</h3>
-              <p class="feature-desc muted">48–72 hour resume edits without compromising quality.</p>
+              <h3 style="margin:0; color:var(--text)">Fast Turnaround</h3>
+              <p class="muted" style="margin-top:6px">48–72 hour resume edits without compromising quality.</p>
             </div>
           </div>
         </div>
@@ -263,8 +228,8 @@
           <div class="d-flex gap-3 align-items-start">
             <div class="feature-ico"><i class="fa-solid fa-eye"></i></div>
             <div>
-              <h3 class="feature-title">Recruiter-First</h3>
-              <p class="feature-desc muted">Optimized for ATS and human readers — we know what passes.</p>
+              <h3 style="margin:0; color:var(--text)">Recruiter-First</h3>
+              <p class="muted" style="margin-top:6px">Optimized for ATS and human readers — we know what passes.</p>
             </div>
           </div>
         </div>
@@ -273,8 +238,8 @@
           <div class="d-flex gap-3 align-items-start">
             <div class="feature-ico"><i class="fa-solid fa-hand-holding-dollar"></i></div>
             <div>
-              <h3 class="feature-title">Negotiation Support</h3>
-              <p class="feature-desc muted">Benchmarking, scripts and rehearsal to boost offers.</p>
+              <h3 style="margin:0; color:var(--text)">Negotiation Support</h3>
+              <p class="muted" style="margin-top:6px">Benchmarking, scripts and rehearsal to boost offers.</p>
             </div>
           </div>
         </div>
@@ -283,8 +248,8 @@
           <div class="d-flex gap-3 align-items-start">
             <div class="feature-ico"><i class="fa-solid fa-people-roof"></i></div>
             <div>
-              <h3 class="feature-title">Personalized Coaching</h3>
-              <p class="feature-desc muted">Everything tailored to your role and career stage.</p>
+              <h3 style="margin:0; color:var(--text)">Personalized Coaching</h3>
+              <p class="muted" style="margin-top:6px">Everything tailored to your role and career stage.</p>
             </div>
           </div>
         </div>
@@ -296,32 +261,32 @@
   <section class="process" aria-labelledby="processHeading">
     <div class="container-lg">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="processHeading" style="margin:0">Our process (simple & proven)</h2>
+        <h2 id="processHeading" style="margin:0; color:var(--text)">Our process (simple & proven)</h2>
         <div class="muted">Clear steps • Measurable outcomes</div>
       </div>
 
       <div class="process-grid mt-4">
         <div class="step" data-animate>
           <div class="num">01</div>
-          <h4 style="margin:0">Discovery</h4>
+          <h4 style="margin:0; color:var(--text)">Discovery</h4>
           <p class="muted" style="margin-top:6px">We gather targets, achievements and goals to create a focus.</p>
         </div>
 
         <div class="step" data-animate>
           <div class="num">02</div>
-          <h4 style="margin:0">Rewrite & Strategy</h4>
+          <h4 style="margin:0; color:var(--text)">Rewrite & Strategy</h4>
           <p class="muted" style="margin-top:6px">Resume rewrite, LinkedIn overhaul and outreach scripts crafted for your roles.</p>
         </div>
 
         <div class="step" data-animate>
           <div class="num">03</div>
-          <h4 style="margin:0">Interview Coaching</h4>
+          <h4 style="margin:0; color:var(--text)">Interview Coaching</h4>
           <p class="muted" style="margin-top:6px">Mock interviews with timestamped feedback and scripts for confidence.</p>
         </div>
 
         <div class="step" data-animate>
           <div class="num">04</div>
-          <h4 style="margin:0">Offer & Negotiation</h4>
+          <h4 style="margin:0; color:var(--text)">Offer & Negotiation</h4>
           <p class="muted" style="margin-top:6px">We prepare real-time scripts and benchmarking to maximize outcomes.</p>
         </div>
       </div>
@@ -332,37 +297,37 @@
   <section class="team" aria-labelledby="teamHeading">
     <div class="container-lg">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="teamHeading" style="margin:0">Meet the team</h2>
+        <h2 id="teamHeading" style="margin:0; color:var(--text)">Meet the team</h2>
         <div class="muted">Experienced recruiters & coaches</div>
       </div>
 
       <div class="team-grid mt-4">
         <div class="teammember" data-animate>
           <img src="https://via.placeholder.com/160" alt="Jane Doe — Founder">
-          <div style="font-weight:800">Jane Doe</div>
+          <div style="font-weight:700; color:var(--text)">Jane Doe</div>
           <div class="muted">Founder & Lead Coach</div>
         </div>
         <div class="teammember" data-animate>
           <img src="https://via.placeholder.com/160" alt="Emeka — Senior Writer">
-          <div style="font-weight:800">Emeka</div>
+          <div style="font-weight:700; color:var(--text)">Emeka</div>
           <div class="muted">Senior Resume Writer</div>
         </div>
         <div class="teammember" data-animate>
           <img src="https://via.placeholder.com/160" alt="Kemi — Negotiation Lead">
-          <div style="font-weight:800">Kemi</div>
+          <div style="font-weight:700; color:var(--text)">Kemi</div>
           <div class="muted">Negotiation Lead</div>
         </div>
         <div class="teammember" data-animate>
           <img src="https://via.placeholder.com/160" alt="Sam — Interview Coach">
-          <div style="font-weight:800">Sam</div>
+          <div style="font-weight:700; color:var(--text)">Sam</div>
           <div class="muted">Interview Coach</div>
         </div>
       </div>
 
       <div class="d-flex gap-3 align-items-center justify-content-center mt-4">
-        <div class="muted micro-inline">Trusted by</div>
-        <img src="https://via.placeholder.com/110x28?text=Forbes" alt="Forbes" style="height:28px; border-radius:6px; filter:grayscale(0.2); opacity:0.95">
-        <img src="https://via.placeholder.com/110x28?text=BBC" alt="BBC" style="height:28px; border-radius:6px; filter:grayscale(0.2); opacity:0.95">
+        <div class="muted" style="font-weight:700">Trusted by</div>
+        <img src="https://via.placeholder.com/110x28?text=Forbes" alt="Forbes" style="height:28px; border-radius:6px; filter:grayscale(1); opacity:0.95">
+        <img src="https://via.placeholder.com/110x28?text=BBC" alt="BBC" style="height:28px; border-radius:6px; filter:grayscale(1); opacity:0.95">
       </div>
     </div>
   </section>
@@ -371,7 +336,7 @@
   <section class="testimonials" aria-labelledby="testiHeading">
     <div class="container-lg">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="testiHeading" style="margin:0">What clients say</h2>
+        <h2 id="testiHeading" style="margin:0; color:var(--text)">What clients say</h2>
         <div class="muted">Real stories, real outcomes</div>
       </div>
 
@@ -380,13 +345,13 @@
           <div class="carousel-item active">
             <div class="testi-card p-4">
               <p class="muted">"The resume rewrite got me 3 interviews in a week — the coaching closed the offer."</p>
-              <div style="font-weight:800; margin-top:8px">— Sarah, Product Manager</div>
+              <div style="font-weight:700; margin-top:8px; color:var(--text)">— Sarah, Product Manager</div>
             </div>
           </div>
           <div class="carousel-item">
             <div class="testi-card p-4">
               <p class="muted">"Their negotiation prep helped me secure a 20% uplift — highly practical."</p>
-              <div style="font-weight:800; margin-top:8px">— Aisha, Marketing Lead</div>
+              <div style="font-weight:700; margin-top:8px; color:var(--text)">— Aisha, Marketing Lead</div>
             </div>
           </div>
         </div>
@@ -403,11 +368,11 @@
     </div>
   </section>
 
-  <!-- FAQ -->
+  <!-- FAQ (5 items) -->
   <section class="faq" aria-labelledby="faqHeading">
     <div class="container-lg">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2 id="faqHeading" style="margin:0">Frequently asked questions</h2>
+        <h2 id="faqHeading" style="margin:0; color:var(--text)">Frequently asked questions</h2>
         <div class="muted">Clear answers</div>
       </div>
 
@@ -444,6 +409,29 @@
             <div class="accordion-body">Most packages include at least two rounds of revisions — details shown at booking.</div>
           </div>
         </div>
+
+        <div class="accordion-item bg-transparent border-0 mb-2">
+          <h2 class="accordion-header" id="faqHeading4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+              How do I share my resume?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" aria-labelledby="faqHeading4" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">After booking, we send a secure upload link. We accept PDF or Word and ask for role targets and 3 achievements to highlight.</div>
+          </div>
+        </div>
+
+        <div class="accordion-item bg-transparent border-0 mb-2">
+          <h2 class="accordion-header" id="faqHeading5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+              Do you offer interview practice recordings?
+            </button>
+          </h2>
+          <div id="faq5" class="accordion-collapse collapse" aria-labelledby="faqHeading5" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes — mock interviews are recorded with timestamped feedback and suggested scripts for follow-ups and negotiation.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -451,7 +439,7 @@
   <!-- CTA -->
   <section class="cta" aria-labelledby="ctaHeading">
     <div class="container-lg text-center">
-      <h2 id="ctaHeading">Ready to move the needle?</h2>
+      <h2 id="ctaHeading" style="color:var(--text)">Ready to move the needle?</h2>
       <p class="muted">Book a free consult — we'll assess your goals and recommend the fastest path to better offers.</p>
       <div style="margin-top:14px">
         <button class="btn btn-primary btn-lg" id="bookNow">Book a free consult</button>
@@ -462,146 +450,130 @@
 
   <!-- Floating WhatsApp -->
   <div class="float-wa" aria-hidden="false">
-    <button id="waBtn" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><i class="fab fa-whatsapp fa-lg"></i></button>
+    <button id="waBtn" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp"><i class="fab fa-whatsapp fa-lg" style="color:#000"></i></button>
   </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container-lg">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="font-weight:700; color:var(--text)">JK Konsult</div>
+        <div class="muted">Career coaching • Resumes • Interview & negotiation support</div>
+
+        <div class="footer-sub">
+          <input id="subscribeEmail" class="subscribe-input" type="email" placeholder="Your email address" aria-label="Email to subscribe">
+          <button id="subscribeBtn" class="btn btn-primary">Subscribe</button>
+        </div>
+
+        <div style="margin-top:8px;display:flex;gap:12px;align-items:center">
+          <a href="https://www.linkedin.com" target="_blank" aria-label="LinkedIn" style="color:var(--muted)"><i class="fab fa-linkedin fa-lg"></i></a>
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter" style="color:var(--muted)"><i class="fab fa-twitter fa-lg"></i></a>
+          <a href="#" aria-label="Instagram" style="color:var(--muted)"><i class="fab fa-instagram fa-lg"></i></a>
+        </div>
+
+        <div style="margin-top:10px;color:var(--muted)">&copy; <span id="year"></span> JK Konsult</div>
+      </div>
+    </div>
+  </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
     // ====== CONFIG ======
-    const WHATSAPP_PHONE = '2349065795183'; // no '+' sign
-    const WA_BASE = 'Hi — I want to enquire about JK Consulting and how you can help me.';
+    const WHATSAPP_PHONE = '2349065795183'; // your number (no leading +)
+    const WA_MSG_BASE = 'Hi — I would like to enquire about JK Konsult.';
 
-    function openWhatsApp(msg) {
-      const t = encodeURIComponent(msg || WA_BASE);
+    function openWhatsApp(message) {
+      const t = encodeURIComponent(message || WA_MSG_BASE);
+      if (!WHATSAPP_PHONE || !/^\d{8,15}$/.test(WHATSAPP_PHONE)) {
+        window.open('https://web.whatsapp.com/', '_blank');
+        alert('Please configure a valid WhatsApp number in the script.');
+        return;
+      }
       window.open(`https://wa.me/${WHATSAPP_PHONE}?text=${t}`, '_blank');
     }
 
-    // Basic button wiring
-    document.getElementById('bookHero').addEventListener('click', () => openWhatsApp('Hi — I would like to book a free consult.'));
-    document.getElementById('viewServices').addEventListener('click', () => window.location.href = '/services.html');
-    document.getElementById('bookNow').addEventListener('click', () => openWhatsApp('Hi — I would like to book a free consult.'));
-    document.getElementById('contactUs').addEventListener('click', () => openWhatsApp('Hi — I have some questions about JK Consulting.'));
-    document.getElementById('waBtn').addEventListener('click', () => openWhatsApp());
+    // Buttons wiring
+    document.getElementById('bookHero')?.addEventListener('click', () => openWhatsApp('Hi — I would like to book a free consult.'));
+    document.getElementById('viewServices')?.addEventListener('click', () => window.location.href = 'services.html');
+    document.getElementById('bookNow')?.addEventListener('click', () => openWhatsApp('Hi — I would like to book a free consult.'));
+    document.getElementById('contactUs')?.addEventListener('click', () => openWhatsApp('Hi — I have questions about JK Konsult.'));
+    document.getElementById('waBtn')?.addEventListener('click', () => openWhatsApp());
+    document.getElementById('bookTop')?.addEventListener('click', () => openWhatsApp('Hi — I want to book a call.'));
 
-    // ====== ANIMATIONS (GSAP) ======
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Ensure headline spans are visible by default (they are) — animate from a defined start state to avoid flash
-    (function(){
-      const hero = document.getElementById('heroTitle');
-      if (!hero) return;
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Normalize: wrap existing text nodes and highlight elements into spans if not already per-word.
-      // This ensures we animate consistently while keeping original content visible.
-      (function wrapWords() {
-        const children = Array.from(hero.childNodes);
-        let parts = [];
-        children.forEach(node => {
-          if (node.nodeType === Node.TEXT_NODE) {
-            // split text node into words
-            const ws = node.textContent.split(/(\s+)/); // keep whitespace tokens
-            ws.forEach(token => {
-              if (token.trim() === '') {
-                parts.push(document.createTextNode(token)); // whitespace preserved
-              } else {
-                const sp = document.createElement('span');
-                sp.textContent = token;
-                parts.push(sp);
-              }
-            });
-          } else if (node.nodeType === Node.ELEMENT_NODE) {
-            // element node (e.g. <span class="highlight">) — convert to a single span preserving class
-            const sp = document.createElement('span');
-            sp.className = node.className || '';
-            sp.textContent = node.textContent;
-            parts.push(sp);
-          }
-        });
-        // replace only if we built parts
-        if (parts.length) {
-          hero.innerHTML = '';
-          parts.forEach(p => hero.appendChild(p));
-        }
-      })();
-
-      const spans = Array.from(hero.querySelectorAll('span'));
-      if (reduced) {
-        spans.forEach(s => { s.style.opacity = '1'; s.style.transform = 'none'; });
-      } else {
-        // gradient sweep on hero text
-        gsap.to(hero, { backgroundPosition: '100% 50%', duration: 8, repeat: -1, yoyo: true, ease: 'sine.inOut', immediateRender: false });
-
-        // stagger entrance from slightly below -> use fromTo with immediateRender:true to avoid flicker
-        gsap.fromTo(spans, 
-          { y: 10, opacity: 0 }, 
-          { y: 0, opacity: 1, duration: 0.72, stagger: 0.05, ease: 'power3.out', immediateRender: true }
-        );
-
-        // highlight spans (class contains 'highlight') bounce gently
-        spans.filter(s => s.classList.contains('highlight')).forEach((el, i) => {
-          gsap.fromTo(el, { y: 0 }, { y: -6, duration: 1.6 + i*0.08, ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 0.9 + i*0.08, immediateRender: false });
-          el.addEventListener('mouseenter', () => gsap.to(el, { scale: 1.04, duration: 0.14 }));
-          el.addEventListener('mouseleave', () => gsap.to(el, { scale: 1.0, duration: 0.14 }));
-        });
+    // Subscribe (basic client-side UX)
+    document.getElementById('subscribeBtn')?.addEventListener('click', () => {
+      const email = document.getElementById('subscribeEmail')?.value?.trim();
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+        alert('Please enter a valid email address to subscribe.');
+        return;
       }
-    })();
+      // For now we open WhatsApp so you get the lead (no backend). Replace with your API endpoint if available.
+      openWhatsApp(`New newsletter signup: ${email}`);
+      document.getElementById('subscribeEmail').value = '';
+      alert('Thanks — subscription request sent.');
+    });
 
-    // stats counter
+    // ====== GSAP: hero & reveal animations (respect reduced-motion) ======
+    gsap.registerPlugin(ScrollTrigger);
     (function(){
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // hero word reveal
+      const hero = document.getElementById('heroTitle');
+      if (hero) {
+        // split into spans if not already
+        if (!hero.querySelector('span')) {
+          const text = hero.textContent.trim();
+          const words = text.split(/\s+/);
+          hero.innerHTML = words.map(w => `<span style="display:inline-block; opacity:0; transform:translateY(8px); margin-right:6px">${w}</span>`).join(' ');
+        }
+        const spans = Array.from(hero.querySelectorAll('span'));
+        if (!reduced) {
+          gsap.fromTo(spans, { y: 12, opacity: 0 }, { y:0, opacity:1, duration:0.7, stagger:0.06, ease:'power3.out' });
+        } else {
+          spans.forEach(s => { s.style.opacity = 1; s.style.transform = 'none'; });
+        }
+      }
+
+      // counters
       const counters = document.querySelectorAll('.stat .num');
       counters.forEach(el => el.textContent = '0');
       if (reduced) {
         counters.forEach(el => el.textContent = el.dataset.target);
-        return;
-      }
-      ScrollTrigger.create({
-        trigger: '.stats',
-        start: 'top 85%',
-        once: true,
-        onEnter: () => {
-          counters.forEach((el, idx) => {
-            const target = +el.dataset.target;
-            gsap.fromTo(el, { innerText: 0 }, {
-              innerText: target,
-              duration: 1.5,
-              ease: 'power1.out',
-              snap: { innerText: 1 },
-              onUpdate() { el.textContent = Math.round(el.innerText).toLocaleString(); }
+      } else {
+        ScrollTrigger.create({
+          trigger: '.stats',
+          start: 'top 85%',
+          once: true,
+          onEnter: () => {
+            counters.forEach((el, idx) => {
+              const target = +el.dataset.target;
+              gsap.fromTo(el, { innerText: 0 }, {
+                innerText: target,
+                duration: 1.2,
+                ease: 'power1.out',
+                snap: { innerText: 1 },
+                onUpdate() { el.textContent = Math.round(el.innerText).toLocaleString(); }
+              });
             });
-          });
-        }
-      });
-    })();
-
-    // animate feature cards & steps
-    (function(){
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.querySelectorAll('[data-animate]').forEach(el => el.style.opacity = 1);
-        return;
-      }
-      gsap.utils.toArray('[data-animate]').forEach((el, i) => {
-        gsap.fromTo(el, { y: 18, opacity: 0 }, {
-          y: 0, opacity: 1, duration: 0.8, ease: 'power3.out', delay: i*0.06,
-          scrollTrigger: { trigger: el, start: 'top 92%', toggleActions: 'play none none reverse' }
+          }
         });
-      });
+      }
+
+      // reveal other elements
+      if (!reduced) {
+        gsap.utils.toArray('[data-animate]').forEach((el, i) => {
+          gsap.fromTo(el, { y: 14, opacity: 0 }, { y:0, opacity:1, duration:0.7, ease:'power3.out', delay: i*0.06, scrollTrigger: { trigger: el, start: 'top 92%' } });
+        });
+      } else {
+        document.querySelectorAll('[data-animate]').forEach(el => el.style.opacity = 1);
+      }
     })();
 
-    // orb motion and subtle background shift
+    // carousel subtle animations
     (function(){
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      gsap.to('.orb.o1', { x: 90, y: 18, rotation: 8, duration: 12, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      gsap.to('.orb.o2', { x: -50, y: -24, rotation: -6, duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      gsap.to('.orb.o3', { x: 30, y: 14, rotation: 4, duration: 14, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-      gsap.to('header.hero', { backgroundPosition: '80% 20%', duration: 9, repeat: -1, yoyo: true, ease: 'sine.inOut' });
-    })();
-
-    // testimonials carousel animations
-    (function() {
       const carouselEl = document.getElementById('testiCarousel');
       if (!carouselEl) return;
       carouselEl.addEventListener('slide.bs.carousel', function() {
@@ -610,16 +582,15 @@
       });
       carouselEl.addEventListener('slid.bs.carousel', function() {
         const newActive = carouselEl.querySelector('.carousel-item.active .testi-card');
-        if (newActive) gsap.fromTo(newActive, { y:18, opacity:0 }, { y:0, opacity:1, duration:0.6, ease:'power3.out' });
+        if (newActive) gsap.fromTo(newActive, { y:12, opacity:0 }, { y:0, opacity:1, duration:0.5, ease:'power3.out' });
       });
     })();
 
-    // accessibility: keyboard activation for primary CTAs
-    (function(){
-      document.querySelectorAll('button').forEach(btn => {
-        btn.addEventListener('keydown', (e)=> { if (e.key === 'Enter') btn.click(); });
-      });
-    })();
+    // accessibility: Enter keyboard activation on frequently used buttons
+    document.querySelectorAll('button').forEach(btn => btn.addEventListener('keydown', e => { if (e.key === 'Enter') btn.click(); }));
+
+    // set year
+    document.getElementById('year') && (document.getElementById('year').textContent = new Date().getFullYear());
   </script>
 </body>
 </html>
