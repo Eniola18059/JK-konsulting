@@ -3,326 +3,305 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JK Konsult — Services & Pricing</title>
+  <title>JK Konsult — Services (NGN)</title>
 
-  <!-- Poppins (site font) -->
+  <!-- Poppins -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Font Awesome (icons) -->
+  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     :root{
-      --page-bg: #ffffff;      /* white page background */
-      --panel-bg: #ffffff;
-      --text: #0b0b0b;         /* near-black primary text */
-      --muted: #555555;        /* secondary text */
-      --border: #e6e6e6;
-      --accent: #000000;       /* black accent (buttons, icons) */
+      --bg: #ffffff;      /* white background */
+      --fg: #000000;      /* black text */
+      --muted: #4b5563;   /* gray for secondary text */
+      --border: rgba(0,0,0,0.08);
       --glass: rgba(0,0,0,0.03);
-      --white: #ffffff;
+      --accent: #000000;
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%; margin:0; font-family:"Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--page-bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; line-height:1.45;}
-
+    html,body{height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--fg); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
     a { color:inherit; text-decoration:none; }
-    .container{max-width:1100px; margin:0 auto; padding:1.25rem;}
+    .container-lg{ max-width:1100px; margin:0 auto; padding:20px; }
 
     /* NAV */
-    nav.navbar{background:transparent; border-bottom:1px solid var(--border); padding:.6rem 0; z-index:1050;}
-    .brand { display:flex; align-items:center; gap:.6rem; text-decoration:none; color:var(--text); }
-    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--accent); color:var(--white); font-weight:800; }
+    nav.navbar { background:transparent; border-bottom:1px solid var(--border); padding:.6rem 0; }
+    .brand { display:flex; align-items:center; gap:.6rem; color:var(--fg); text-decoration:none; }
+    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--fg); color:var(--bg); font-weight:800; }
     .nav-link { color:var(--muted) !important; font-weight:600; margin-left:.6rem; }
-    .nav-link:hover { color:var(--text) !important; text-decoration:none; }
+    .nav-link:hover { color:var(--fg) !important; text-decoration:none; }
 
-    /* Toggler: white with black bars (visible on white) */
+    /* visible toggler for mobile */
     .navbar-toggler {
-      border:1px solid rgba(0,0,0,0.06);
-      background: var(--white);
-      width:54px;
-      height:44px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:10px;
-      padding:6px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,0.03);
+      width:56px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px; padding:6px;
     }
-    .navbar-toggler svg { width:22px; height:18px; display:block; }
-    .navbar-toggler svg rect { fill: var(--accent); rx:2; }
+    .navbar-toggler svg rect { fill: var(--fg); rx:2; }
 
     /* HERO */
-    .page-hero { padding:48px 0 28px; text-align:left; }
-    .page-hero h1 { font-size:clamp(26px,3.8vw,40px); margin:0 0 .4rem; font-weight:800; color:var(--text); }
-    .page-hero p.lead { color:var(--muted); margin:0 0 14px; max-width:70ch; }
+    .hero { padding:34px 0 14px; text-align:left; }
+    .hero h1 { font-size:clamp(26px,4vw,40px); margin:0 0 .6rem; font-weight:800; color:var(--fg); line-height:1.05; }
+    .hero p.lead { color:var(--muted); margin:0 0 12px; max-width:72ch; }
 
-    /* GRID */
-    .services-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:18px; margin-top:18px; }
+    .download-btn { display:inline-flex; gap:10px; align-items:center; padding:10px 14px; border-radius:10px; border:1px dashed var(--border); color:var(--muted); background:transparent; font-weight:700; }
+
+    /* GRID & CARDS */
+    .services-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:18px; margin-top:18px; }
     .service-card {
-      background: var(--white);
+      background: var(--bg);
       border:1px solid var(--border);
       border-radius:12px;
       padding:18px;
       display:flex;
       flex-direction:column;
-      min-height:240px;
-      transition: transform .18s ease, box-shadow .18s ease;
+      min-height:220px;
+      transition: transform .22s ease, box-shadow .22s ease;
+      will-change: transform;
     }
-    .service-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(10,10,10,0.04); }
+    .service-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
     .service-head { display:flex; gap:12px; align-items:flex-start; }
-    .service-ico { width:56px; height:56px; display:grid; place-items:center; border-radius:10px; background:var(--glass); color:var(--accent); font-size:18px; flex-shrink:0; border:1px solid rgba(0,0,0,0.04); }
-    .service-title { font-weight:800; font-size:1.02rem; margin:0; color:var(--text); }
-    .service-desc { color:var(--muted); margin-top:6px; font-weight:600; }
+    .service-ico { width:56px; height:56px; display:grid; place-items:center; border-radius:10px; background:var(--glass); color:var(--fg); font-size:20px; flex-shrink:0; }
+    .service-title { font-weight:800; font-size:1.02rem; margin:0; color:var(--fg); }
+    .service-desc { color:var(--muted); margin-top:8px; font-weight:600; }
 
-    /* pricing list */
-    .pricing { margin-top:12px; display:flex; flex-direction:column; gap:10px; }
-    .price-row {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:10px 12px; border-radius:10px; border:1px solid var(--border);
-      background:transparent;
-    }
-    .price-info { display:flex; gap:10px; align-items:center; color:var(--text); }
-    .price-tier { font-weight:800; color:var(--text); }
-    .price-amount { font-weight:900; font-size:1.05rem; color:var(--text); }
+    .benefits { margin-top:10px; color:var(--muted); font-weight:600; }
+    .benefits ol { padding-left:18px; margin:6px 0 0 0; }
+    .benefits li { margin:6px 0; }
+
+    .pricing { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
+    .price-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.03); background:transparent; }
+    .price-tier { font-weight:800; color:var(--fg); }
+    .price-amount { font-weight:900; color:var(--fg); }
 
     .service-actions { margin-top:auto; display:flex; gap:10px; align-items:center; justify-content:flex-end; }
 
+    .btn-primary { background:var(--fg); color:var(--bg); font-weight:800; border-radius:10px; padding:.5rem .9rem; border:none; cursor:pointer; }
+    .btn-outline { background:transparent; border:1px solid var(--border); color:var(--muted); padding:.45rem .75rem; border-radius:10px; font-weight:700; cursor:pointer; }
+
     .small-muted { font-size:.92rem; color:var(--muted); font-weight:600; }
 
-    /* buttons consistent with Why page: black primary + white text */
-    .btn-primary { background:var(--accent); color:var(--white); font-weight:800; border-radius:10px; padding:.5rem .9rem; border:none; }
-    .btn-outline { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:.45rem .75rem; border-radius:10px; font-weight:700; }
+    /* floating WA */
+    .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; gap:10px; flex-direction:column; }
+    .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:#25D366; color:#fff; border:none; box-shadow:0 12px 34px rgba(0,0,0,0.12); cursor:pointer; }
 
-    /* responsive tweaks */
-    @media (max-width:600px){
-      .service-actions { justify-content:flex-start; margin-top:12px; }
-      .pricing { gap:8px; }
+    /* footer subscribe box */
+    footer { padding:26px 0; border-top:1px solid var(--border); color:var(--muted); margin-top:28px; }
+    footer input[type="email"] { padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); width:260px; }
+
+    /* responsive */
+    @media (max-width:920px){
+      .services-grid { grid-template-columns: 1fr; }
+      .service-actions { justify-content:flex-start; }
+      .hero { padding:24px 0 10px; }
     }
 
-    /* footer */
-    footer { padding:28px 0; border-top:1px solid var(--border); color:var(--muted); margin-top:34px; }
-
-    /* accessibility focus */
-    .service-card:focus { outline:3px solid rgba(0,0,0,0.08); box-shadow:0 8px 30px rgba(0,0,0,0.04); transform:translateY(-4px); }
-
+    /* focus states */
+    .service-card:focus { outline:3px solid rgba(0,0,0,0.06); box-shadow:0 8px 30px rgba(0,0,0,0.04); transform:translateY(-4px); }
   </style>
 </head>
 <body>
   <!-- NAV -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="brand" href="index.html" aria-label="JK Konsult Home">
+  <nav class="navbar navbar-expand-lg navbar-light" aria-label="Primary navigation">
+    <div class="container-lg d-flex align-items-center justify-content-between">
+      <a class="brand" href="index.html" aria-label="JK Konsult home">
         <div class="brand-mark" aria-hidden="true">JK</div>
-        <div style="line-height:1;">
-          <div style="font-weight:800; color:var(--text);">JK Konsult</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Career Coaching & Resumes</div>
+        <div>
+          <div style="font-weight:800;color:var(--fg)">JK Konsult</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px">Career Coaching & Resumes</div>
         </div>
       </a>
 
-      <!-- high-contrast toggler -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-        <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-          <rect x="0" y="0" width="24" height="2"></rect>
-          <rect x="0" y="8" width="24" height="2"></rect>
-          <rect x="0" y="16" width="24" height="2"></rect>
-        </svg>
-      </button>
+      <div class="d-flex align-items-center">
+        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" width="24" height="18">
+            <rect x="0" y="0" width="24" height="2"></rect>
+            <rect x="0" y="8" width="24" height="2"></rect>
+            <rect x="0" y="16" width="24" height="2"></rect>
+          </svg>
+        </button>
 
-      <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="service.html">Services</a></li>
-          <li class="nav-item"><a class="nav-link" href="why.html">Why</a></li>
-          <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
-          <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-          <li class="nav-item ms-3"><button id="bookTop" class="btn btn-outline">Book a Call</button></li>
-        </ul>
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav ms-auto align-items-lg-center">
+            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
+            <li class="nav-item"><a class="nav-link" href="why.html">Why</a></li>
+            <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+            <li class="nav-item ms-3"><button id="bookTop" class="btn btn-outline">Book / Chat</button></li>
+          </ul>
+        </div>
       </div>
     </div>
   </nav>
 
-  <!-- HERO -->
-  <main class="container">
-    <section class="page-hero">
-      <h1>Services designed to help you get hired — with clear pricing.</h1>
-      <p class="lead">Select a service and plan below. Pricing is shown per service — choose a plan and tap <strong>Book</strong> to open WhatsApp with a pre-filled message so we can confirm availability.</p>
+  <!-- MAIN -->
+  <main class="container-lg" role="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="heroTitle">
+      <h1 id="heroTitle">Services — clear, results-focused (prices in NGN)</h1>
+      <p class="lead">Below are the core services offered by JK Konsult. Each service summary is intentionally concise — the full brief is available as a downloadable PDF.</p>
+
+      <div style="margin-top:12px;">
+        <a class="download-btn" href="JK Konsulting.pdf" download aria-label="Download full service brief (PDF)">
+          <i class="fa-solid fa-file-arrow-down"></i>
+          Download full brief (PDF)
+        </a>
+      </div>
     </section>
 
-    <!-- Services grid -->
-    <section aria-labelledby="services-list">
-      <h2 id="services-list" class="visually-hidden">Services and pricing</h2>
+    <!-- SERVICES GRID -->
+    <section aria-labelledby="services-list" style="margin-top:18px;">
+      <h2 id="services-list" class="visually-hidden">Services</h2>
 
       <div class="services-grid" role="list">
-        <!-- Resume Refinement -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-resume">
+        <!-- CV Review & Refinement -->
+        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-cv-title">
           <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></div>
+            <div class="service-ico"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></div>
             <div style="flex:1">
-              <h3 id="title-resume" class="service-title">Resume Refinement</h3>
-              <div class="service-desc">Achievement-focused rewrites, ATS optimization and recruiter-optimized formatting.</div>
+              <h3 id="svc-cv-title" class="service-title">CV Review & Refinement</h3>
+              <div class="service-desc">Keyword-optimised CVs tailored for your role and industry so your application passes ATS and appeals to recruiters.</div>
 
-              <div class="pricing" aria-label="Pricing options for Resume Refinement">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Standard</div><div class="small-muted"> — 48–72 hour delivery</div></div>
-                  <div class="price-amount">$99</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Priority</div><div class="small-muted"> — 24 hour express</div></div>
-                  <div class="price-amount">$179</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Executive</div><div class="small-muted"> — senior / leadership CV</div></div>
-                  <div class="price-amount">$349</div>
-                </div>
+              <div class="benefits" aria-label="What you benefit">
+                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
+                <ol>
+                  <li>Keyword-optimised CV that clears Applicant Tracking Systems (within 5 working days).</li>
+                  <li>Layout, structuring and formatting for clarity and impact.</li>
+                  <li>Content alignment with job requirements and fixes for gaps/inconsistencies.</li>
+                </ol>
               </div>
 
-              <div class="service-actions" aria-hidden="false">
-                <button class="btn btn-outline" data-service="Resume Refinement" data-plan="Standard" data-price="99">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Resume Refinement" data-plan="Standard" data-price="99">Book — $99</button>
+              <div class="pricing" aria-hidden="false">
+                <div class="price-row"><div class="price-tier">Standard (48–72 hrs)</div><div class="price-amount">₦50,000</div></div>
+                <div class="price-row"><div class="price-tier">Express (within 24 hrs)</div><div class="price-amount">₦70,000</div></div>
+                <div class="price-row"><div class="price-tier">Executive</div><div class="price-amount">₦100,000</div></div>
+              </div>
+
+              <div class="service-actions">
+                <button class="btn btn-outline" data-service="CV Review & Refinement" data-plan="Info">Details</button>
+                <button class="btn btn-primary book-btn" data-service="CV Review & Refinement" data-plan="Standard" data-price="50000">Book — ₦50,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- LinkedIn Optimization -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-linkedin">
+        <!-- LinkedIn Optimisation -->
+        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-linkedin-title">
           <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
+            <div class="service-ico"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></div>
             <div style="flex:1">
-              <h3 id="title-linkedin" class="service-title">LinkedIn Optimization</h3>
-              <div class="service-desc">Profile rewrite, headline + about optimization and recruiter search visibility improvements.</div>
+              <h3 id="svc-linkedin-title" class="service-title">LinkedIn Optimisation</h3>
+              <div class="service-desc">Optimize your profile (title, About, keywords) so you appear in recruiter searches and on Google results.</div>
+
+              <div class="benefits" aria-label="What you benefit">
+                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
+                <ol>
+                  <li>Keyword-driven profile optimised for your role and skills.</li>
+                  <li>A persuasive About section showcasing career highlights.</li>
+                  <li>Experience entries aligned with your CV to present consistent impact.</li>
+                </ol>
+              </div>
 
               <div class="pricing">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Profile Refresh</div><div class="small-muted"> — headline & summary</div></div>
-                  <div class="price-amount">$79</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Full Optimize</div><div class="small-muted"> — full profile + outreach scripts</div></div>
-                  <div class="price-amount">$149</div>
-                </div>
+                <div class="price-row"><div class="price-tier">Full Optimisation</div><div class="price-amount">₦40,000</div></div>
+                <div class="price-row"><div class="price-tier">LinkedIn + CV Review (combo)</div><div class="price-amount">₦80,000</div></div>
               </div>
 
               <div class="service-actions">
-                <button class="btn btn-outline" data-service="LinkedIn Optimization" data-plan="Profile Refresh" data-price="79">Details</button>
-                <button class="btn btn-primary book-btn" data-service="LinkedIn Optimization" data-plan="Profile Refresh" data-price="79">Book — $79</button>
+                <button class="btn btn-outline" data-service="LinkedIn Optimisation" data-plan="Info">Details</button>
+                <button class="btn btn-primary book-btn" data-service="LinkedIn Optimisation" data-plan="Full Optimisation" data-price="40000">Book — ₦40,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Interview Coaching -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-interview">
+        <!-- Job Interview Preparation -->
+        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-interview-title">
           <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-solid fa-comments"></i></div>
+            <div class="service-ico"><i class="fa-solid fa-comments" aria-hidden="true"></i></div>
             <div style="flex:1">
-              <h3 id="title-interview" class="service-title">Interview Coaching</h3>
-              <div class="service-desc">Mock interviews, behavioral and technical prep, recorded feedback and scripts.</div>
+              <h3 id="svc-interview-title" class="service-title">Job Interview Preparation</h3>
+              <div class="service-desc">Practical preparation for screening, behavioural and hiring-manager interviews — includes mock, feedback and negotiation tips.</div>
+
+              <div class="benefits" aria-label="What you benefit">
+                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
+                <ol>
+                  <li>Pre-interview checklist and key preparation points.</li>
+                  <li>How to structure answers and handle behavioural/technical questions.</li>
+                  <li>Mock interview with recorded feedback and negotiation guidance.</li>
+                </ol>
+              </div>
 
               <div class="pricing">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Single Session</div><div class="small-muted"> — 60 minutes</div></div>
-                  <div class="price-amount">$120</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Package (3 sessions)</div><div class="small-muted"> — practice + review</div></div>
-                  <div class="price-amount">$320</div>
-                </div>
+                <div class="price-row"><div class="price-tier">One-time session (60 mins)</div><div class="price-amount">₦70,000</div></div>
+                <div class="price-row"><div class="price-tier">Package (3 sessions)</div><div class="price-amount">₦150,000</div></div>
               </div>
 
               <div class="service-actions">
-                <button class="btn btn-outline" data-service="Interview Coaching" data-plan="Single Session" data-price="120">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Interview Coaching" data-plan="Single Session" data-price="120">Book — $120</button>
+                <button class="btn btn-outline" data-service="Job Interview Preparation" data-plan="Info">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Job Interview Preparation" data-plan="One-time session" data-price="70000">Book — ₦70,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Offer Negotiation -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-negotiation">
+        <!-- Career Coaching -->
+        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-career-title">
           <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-solid fa-handshake-angle"></i></div>
+            <div class="service-ico"><i class="fa-solid fa-compass" aria-hidden="true"></i></div>
             <div style="flex:1">
-              <h3 id="title-negotiation" class="service-title">Offer Negotiation</h3>
-              <div class="service-desc">Market benchmarking, script drafting and mock negotiation practice to boost offers.</div>
+              <h3 id="svc-career-title" class="service-title">Career Coaching</h3>
+              <div class="service-desc">Bespoke sessions focused on clarity, transitions and purpose — practical next steps tailored to you.</div>
+
+              <div class="benefits" aria-label="What you benefit">
+                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
+                <ol>
+                  <li>Career clarity and actionable next steps.</li>
+                  <li>Guidance for career transitions or role pivots.</li>
+                  <li>Exploration of career paths aligned with your purpose.</li>
+                </ol>
+              </div>
 
               <div class="pricing">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Standard</div><div class="small-muted"> — 60 minute session</div></div>
-                  <div class="price-amount">$150</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Deep Package</div><div class="small-muted"> — data + strategy + scripting</div></div>
-                  <div class="price-amount">$299</div>
-                </div>
+                <div class="price-row"><div class="price-tier">Single session</div><div class="price-amount">₦85,000</div></div>
               </div>
 
               <div class="service-actions">
-                <button class="btn btn-outline" data-service="Offer Negotiation" data-plan="Standard" data-price="150">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Offer Negotiation" data-plan="Standard" data-price="150">Book — $150</button>
+                <button class="btn btn-outline" data-service="Career Coaching" data-plan="Info">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Career Coaching" data-plan="Single session" data-price="85000">Book — ₦85,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Career Strategy -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-strategy">
+        <!-- Speaking Engagement (no price) -->
+        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-speaking-title">
           <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-solid fa-chalkboard-teacher"></i></div>
+            <div class="service-ico"><i class="fa-solid fa-microphone" aria-hidden="true"></i></div>
             <div style="flex:1">
-              <h3 id="title-strategy" class="service-title">Career Strategy</h3>
-              <div class="service-desc">6–12 month roadmaps for promotions, pivots and leadership positioning.</div>
+              <h3 id="svc-speaking-title" class="service-title">Speaking Engagement</h3>
+              <div class="service-desc">Keynotes, workshops and panels — practical, evidence-based talks tailored to your audience.</div>
 
-              <div class="pricing">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Roadmap Session</div><div class="small-muted"> — 90 minutes</div></div>
-                  <div class="price-amount">$249</div>
-                </div>
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Full Coaching (3m)</div><div class="small-muted"> — roadmap + monthly check-ins</div></div>
-                  <div class="price-amount">$799</div>
-                </div>
+              <div class="benefits" aria-label="What you benefit">
+                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
+                <ol>
+                  <li>Audience-focused keynote or workshop.</li>
+                  <li>Actionable takeaways and practical frameworks.</li>
+                  <li>Custom content for your event.</li>
+                </ol>
               </div>
 
               <div class="service-actions">
-                <button class="btn btn-outline" data-service="Career Strategy" data-plan="Roadmap Session" data-price="249">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Career Strategy" data-plan="Roadmap Session" data-price="249">Book — $249</button>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Speaking Engagement -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="title-speaking">
-          <div class="service-head">
-            <div class="service-ico" aria-hidden="true"><i class="fa-solid fa-microphone"></i></div>
-            <div style="flex:1">
-              <h3 id="title-speaking" class="service-title">Speaking Engagement</h3>
-              <div class="service-desc">Keynotes, workshops and panels. Pricing varies by scope and travel.</div>
-
-              <div class="pricing">
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Standard Keynote</div><div class="small-muted"> — 45–60 mins (starting)</div></div>
-                  <div class="price-amount">From $1,200</div>
-                </div>
-
-                <div class="price-row">
-                  <div class="price-info"><div class="price-tier">Workshop (Half day)</div><div class="small-muted"> — includes materials</div></div>
-                  <div class="price-amount">From $2,400</div>
-                </div>
-              </div>
-
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="Speaking Engagement" data-plan="Keynote" data-price="1200">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Speaking Engagement" data-plan="Inquiry" data-price="0">Book — Request Quote</button>
+                <button class="btn btn-outline" data-service="Speaking Engagement" data-plan="Info">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Speaking Engagement" data-plan="Request Quote" data-price="0">Request quote</button>
               </div>
             </div>
           </div>
@@ -331,22 +310,31 @@
       </div>
     </section>
 
-    <!-- small explanatory note -->
     <div style="margin-top:18px" class="small-muted">
-      Prices shown are starting rates in USD. Final price may vary by experience level and bespoke requirements — we'll confirm scope when you book.
+      Prices shown are starting rates in NGN (Naira). Final price depends on level and bespoke requirements — we confirm scope when you book. Full service brief available in the downloadable PDF.
     </div>
-
   </main>
 
-  <!-- Footer -->
+  <!-- floating WhatsApp -->
+  <div class="float-wa" aria-hidden="false">
+    <button id="waFloat" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+      <i class="fab fa-whatsapp fa-lg" style="color:#fff"></i>
+    </button>
+  </div>
+
+  <!-- FOOTER -->
   <footer>
-    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
+    <div class="container-lg d-flex flex-column flex-md-row justify-content-between align-items-center">
       <div>
-        <strong style="color:var(--text)">JK Konsult</strong>
+        <strong style="color:var(--fg)">JK Konsult</strong>
         <div style="color:var(--muted); margin-top:6px">Career coaching & consulting • Resumes, Interviews & Hiring support</div>
       </div>
 
       <div style="margin-top:12px" class="text-md-end">
+        <div style="margin-bottom:8px">
+          <input id="subscribeEmail" type="email" placeholder="Enter your email" aria-label="Email for newsletter">
+          <button id="subscribeBtn" class="btn btn-primary" style="margin-left:8px">Subscribe</button>
+        </div>
         <div style="color:var(--muted); font-size:13px">&copy; <span id="year"></span> JK Konsult</div>
       </div>
     </div>
@@ -356,59 +344,103 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // -----------------------
-    // CONFIG
-    // -----------------------
-    const WHATSAPP_NUMBER = '2349065795183'; // your WhatsApp (no + or spaces)
-    const WA_BASE = 'Hi — I want to book: ';
+    // CONFIG: set your WhatsApp number (no +)
+    const WHATSAPP_NUMBER = '2349065795183';
+    const WA_BASE = 'Hi — I would like to book: ';
 
-    // BOOKING
+    // BOOKING: open WhatsApp with service, plan, price (price passed as plain number in NGN)
     function openWhatsAppBooking(service, plan, price) {
-      const planText = plan ? ` (${plan})` : '';
-      const priceText = (price && price !== "0") ? ` — ${price}` : (price === '0' ? ' — Request quote' : '');
-      const msg = encodeURIComponent(WA_BASE + service + (plan ? ' — ' + plan : '') + (priceText || ''));
+      const planPart = plan ? (' — ' + plan) : '';
+      let pricePart = '';
+      if (price && price !== '0') {
+        const n = Number(price);
+        if (!isNaN(n)) pricePart = ' — ₦' + n.toLocaleString();
+      } else if (price === '0') {
+        pricePart = ' — Request quote';
+      }
+      const msg = encodeURIComponent(WA_BASE + service + planPart + pricePart);
       if (!WHATSAPP_NUMBER || !/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
         window.open('https://web.whatsapp.com/', '_blank');
         alert('Please configure a valid WhatsApp number in the script.');
         return;
       }
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
     }
 
-    // Attach handlers
+    // Wire the Book buttons
     document.querySelectorAll('.book-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const svc = btn.getAttribute('data-service') || '';
+        const svc = btn.getAttribute('data-service') || btn.closest('.service-card')?.querySelector('.service-title')?.innerText || 'Service';
         const plan = btn.getAttribute('data-plan') || '';
         const price = btn.getAttribute('data-price') || '';
-        openWhatsAppBooking(svc, plan, (price && price !== '0') ? `$${price}` : (price === '0' ? 'Request quote' : ''));
+        openWhatsAppBooking(svc, plan, price);
       });
     });
 
-    document.getElementById('bookTop')?.addEventListener('click', ()=> openWhatsAppBooking('General enquiry', '', ''));
-
-    // Details buttons open WhatsApp for info request
-    document.querySelectorAll('.service-card .btn-outline').forEach(btn=>{
-      btn.addEventListener('click', (e)=>{
+    // Details buttons: send info request via WhatsApp
+    document.querySelectorAll('.service-card .btn-outline').forEach(btn => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
         const svc = btn.getAttribute('data-service') || btn.closest('.service-card')?.querySelector('.service-title')?.innerText || 'Service';
         openWhatsAppBooking(svc, 'Info request', '');
       });
     });
 
-    // keyboard accessibility: Enter on card triggers primary book
-    document.querySelectorAll('.service-card').forEach(card=>{
-      card.addEventListener('keydown', (e)=>{
-        if(e.key === 'Enter'){
-          const primary = card.querySelector('.book-btn');
-          if(primary) primary.click();
+    // Floating WA
+    document.getElementById('waFloat')?.addEventListener('click', ()=> {
+      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi — I have a question about JK Konsult services.')}`, '_blank');
+    });
+
+    // Top nav Book
+    document.getElementById('bookTop')?.addEventListener('click', ()=> openWhatsAppBooking('General enquiry', '', ''));
+
+    // Subscribe demo
+    document.getElementById('subscribeBtn')?.addEventListener('click', ()=> {
+      const email = (document.getElementById('subscribeEmail')?.value || '').trim();
+      if(!email || !/^\S+@\S+\.\S+$/.test(email)) return alert('Enter a valid email.');
+      alert('Thanks — subscription saved (demo).');
+      document.getElementById('subscribeEmail').value = '';
+    });
+
+    // Enter on card triggers primary book
+    document.querySelectorAll('.service-card').forEach(card => {
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const primary = card.querySelector('.book-btn') || card.querySelector('.btn-outline');
+          if (primary) primary.click();
         }
       });
     });
 
     // set year
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // GSAP animations — hero reveal, card stagger, WA pulse
+    gsap.registerPlugin(ScrollTrigger);
+    (function animate() {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) return;
+
+      gsap.from("#heroTitle", { y: 18, opacity: 0, duration: 0.7, ease: "power3.out" });
+      gsap.from(".hero p.lead", { y: 10, opacity: 0, duration: 0.6, delay: 0.12, ease: "power3.out" });
+      gsap.from(".download-btn", { y: 10, opacity: 0, duration: 0.6, delay: 0.18, ease: "power3.out" });
+
+      gsap.utils.toArray('.service-card').forEach((card, i) => {
+        gsap.fromTo(card, { y: 20, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', delay: 0.08 * i,
+          scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none reverse' }
+        });
+
+        const primary = card.querySelector('.btn-primary');
+        if (primary) {
+          primary.addEventListener('mouseenter', () => gsap.to(primary, { scale: 1.03, duration: 0.12 }));
+          primary.addEventListener('mouseleave', () => gsap.to(primary, { scale: 1.0, duration: 0.12 }));
+        }
+      });
+
+      const wa = document.querySelector('.wa-btn');
+      if (wa) gsap.to(wa, { scale: 1.06, boxShadow: "0 18px 40px rgba(37,211,102,0.14)", duration: 1.4, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.6 });
+    })();
   </script>
 </body>
 </html>
