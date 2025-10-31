@@ -3,444 +3,568 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>JK Konsult — Services (NGN)</title>
+  <title>JK Konsult — Services</title>
 
-  <!-- Poppins -->
+  <!-- Poppins font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Bootstrap 5 -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- GSAP -->
+  <!-- GSAP for animations -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
   <style>
     :root{
-      --bg: #ffffff;      /* white background */
-      --fg: #000000;      /* black text */
-      --muted: #4b5563;   /* gray for secondary text */
-      --border: rgba(0,0,0,0.08);
-      --glass: rgba(0,0,0,0.03);
-      --accent: #000000;
+      --bg: #ffffff;     /* white background (client request) */
+      --text: #0b0b0b;   /* black text */
+      --muted: #333333;  /* secondary text */
+      --accent: #000000; /* accent (keeps monochrome look) */
+      --panel: #f6f6f6;
+      --card-border: rgba(0,0,0,0.06);
+      --wa-green: #25D366;
     }
-    *{box-sizing:border-box}
-    html,body{height:100%; margin:0; font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:var(--bg); color:var(--fg); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+
+    * { box-sizing: border-box; }
+    html,body { height:100%; margin:0; font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; scroll-behavior:smooth; }
+
     a { color:inherit; text-decoration:none; }
-    .container-lg{ max-width:1100px; margin:0 auto; padding:20px; }
 
     /* NAV */
-    nav.navbar { background:transparent; border-bottom:1px solid var(--border); padding:.6rem 0; }
-    .brand { display:flex; align-items:center; gap:.6rem; color:var(--fg); text-decoration:none; }
-    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--fg); color:var(--bg); font-weight:800; }
-    .nav-link { color:var(--muted) !important; font-weight:600; margin-left:.6rem; }
-    .nav-link:hover { color:var(--fg) !important; text-decoration:none; }
+    .navbar { background: transparent; border-bottom:1px solid var(--card-border); padding:0.6rem 0; }
+    .brand-mark { width:44px; height:44px; display:grid; place-items:center; border-radius:8px; background:var(--text); color:var(--bg); font-weight:800; font-size:16px; }
+    .brand-title { line-height:1; margin-left:8px; }
+    .nav-link { color:var(--muted) !important; font-weight:600; margin-left:0.6rem; }
+    .nav-link:hover { color:var(--text) !important; }
 
-    /* visible toggler for mobile */
+    /* Improved high-contrast toggler */
     .navbar-toggler {
-      border:1px solid var(--border);
-      background: rgba(0,0,0,0.03);
-      width:56px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px; padding:6px;
+      border:1px solid rgba(0,0,0,0.08);
+      background: rgba(0,0,0,0.04);
+      width:54px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:10px; padding:6px;
     }
-    .navbar-toggler svg rect { fill: var(--fg); rx:2; }
+    .navbar-toggler svg { width:22px; height:18px; display:block; }
+    .navbar-toggler svg rect { fill: var(--text); rx:2; }
+
+    .container-wide { max-width:1100px; margin:0 auto; padding:1.25rem; }
 
     /* HERO */
-    .hero { padding:34px 0 14px; text-align:left; }
-    .hero h1 { font-size:clamp(26px,4vw,40px); margin:0 0 .6rem; font-weight:800; color:var(--fg); line-height:1.05; }
-    .hero p.lead { color:var(--muted); margin:0 0 12px; max-width:72ch; }
+    .hero { padding:56px 0 30px; text-align:left; }
+    .micro { text-transform:uppercase; font-weight:800; letter-spacing:1px; color:var(--muted); font-size:12px; margin-bottom:6px; display:inline-block; }
+    .hero h1 { font-size: clamp(28px, 4.6vw, 44px); margin:0 0 8px; font-weight:800; line-height:1.02; color:var(--text); }
+    .hero p.lead { color:var(--muted); margin:0 0 12px; font-weight:600; max-width:70ch; }
 
-    .download-btn { display:inline-flex; gap:10px; align-items:center; padding:10px 14px; border-radius:10px; border:1px dashed var(--border); color:var(--muted); background:transparent; font-weight:700; }
+    /* Controls */
+    .controls { display:flex; gap:12px; align-items:center; margin-top:18px; flex-wrap:wrap; }
+    .search-input { width:360px; max-width:100%; }
 
-    /* GRID & CARDS */
-    .services-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:18px; margin-top:18px; }
-    .service-card {
-      background: var(--bg);
-      border:1px solid var(--border);
-      border-radius:12px;
-      padding:18px;
-      display:flex;
-      flex-direction:column;
-      min-height:220px;
-      transition: transform .22s ease, box-shadow .22s ease;
-      will-change: transform;
+    /* Services grid */
+    .svc-grid { margin-top:22px; display:grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap:18px; align-items:start; }
+    .svc-card {
+      background: var(--panel);
+      border:1px solid var(--card-border);
+      border-radius:12px; padding:18px; min-height:230px;
+      transition: transform .32s ease, box-shadow .32s ease;
+      display:flex; flex-direction:column;
     }
-    .service-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(0,0,0,0.06); }
-    .service-head { display:flex; gap:12px; align-items:flex-start; }
-    .service-ico { width:56px; height:56px; display:grid; place-items:center; border-radius:10px; background:var(--glass); color:var(--fg); font-size:20px; flex-shrink:0; }
-    .service-title { font-weight:800; font-size:1.02rem; margin:0; color:var(--fg); }
-    .service-desc { color:var(--muted); margin-top:8px; font-weight:600; }
+    .svc-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(0,0,0,0.06); }
+    .svc-meta { display:flex; gap:14px; align-items:flex-start; }
+    .svc-ico { width:64px; height:64px; display:grid; place-items:center; border-radius:12px; background:#ffffff; color:var(--text); font-size:22px; border:1px solid var(--card-border); flex-shrink:0; }
+    .svc-title { font-weight:800; margin:0; color:var(--text); font-size:1.05rem; }
+    .svc-desc { color:var(--muted); margin-top:8px; font-weight:600; white-space:pre-wrap; }
 
-    .benefits { margin-top:10px; color:var(--muted); font-weight:600; }
-    .benefits ol { padding-left:18px; margin:6px 0 0 0; }
-    .benefits li { margin:6px 0; }
+    .svc-details { margin-top:12px; color:var(--muted); font-weight:600; line-height:1.45; white-space:pre-wrap; }
 
+    .svc-actions { margin-top:auto; display:flex; gap:10px; align-items:center; justify-content:flex-end; }
+    .btn-primary { background:var(--text); color:var(--bg); border:none; font-weight:800; padding:.5rem .9rem; border-radius:10px; }
+    .btn-outline { background:transparent; border:1px solid rgba(0,0,0,0.08); color:var(--text); padding:.45rem .75rem; border-radius:10px; font-weight:700; }
+
+    /* Pricing block inside service */
     .pricing { margin-top:12px; display:flex; flex-direction:column; gap:8px; }
-    .price-row { display:flex; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.03); background:transparent; }
-    .price-tier { font-weight:800; color:var(--fg); }
-    .price-amount { font-weight:900; color:var(--fg); }
+    .price-row { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.04); background:#fff; color:#000; }
+    .price-tier { font-weight:700; font-size:0.98rem; }
+    .price-amount { font-weight:900; }
 
-    .service-actions { margin-top:auto; display:flex; gap:10px; align-items:center; justify-content:flex-end; }
+    /* FAQ */
+    .faq { margin-top:36px; }
+    .accordion-button { background:transparent; color:var(--text); font-weight:700; border-radius:8px; }
+    .accordion-body { color:var(--muted); font-weight:600; }
 
-    .btn-primary { background:var(--fg); color:var(--bg); font-weight:800; border-radius:10px; padding:.5rem .9rem; border:none; cursor:pointer; }
-    .btn-outline { background:transparent; border:1px solid var(--border); color:var(--muted); padding:.45rem .75rem; border-radius:10px; font-weight:700; cursor:pointer; }
+    /* Footer */
+    footer { margin-top:48px; padding:28px 0; border-top:1px solid var(--card-border); color:var(--muted); }
+    footer a { color:var(--muted); text-decoration:none; }
+    footer input { padding:.5rem .6rem; border-radius:8px; border:1px solid rgba(0,0,0,0.06); width:220px; }
 
-    .small-muted { font-size:.92rem; color:var(--muted); font-weight:600; }
+    /* Floating WhatsApp */
+    .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; flex-direction:column; gap:12px; }
+    .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:var(--wa-green); color:#fff; border:none; box-shadow:0 10px 30px rgba(0,0,0,0.08); cursor:pointer; }
 
-    /* floating WA */
-    .float-wa { position:fixed; right:18px; bottom:18px; z-index:9999; display:flex; gap:10px; flex-direction:column; }
-    .wa-btn { width:56px; height:56px; display:grid; place-items:center; border-radius:999px; background:#25D366; color:#fff; border:none; box-shadow:0 12px 34px rgba(0,0,0,0.12); cursor:pointer; }
-
-    /* footer subscribe box */
-    footer { padding:26px 0; border-top:1px solid var(--border); color:var(--muted); margin-top:28px; }
-    footer input[type="email"] { padding:.5rem .6rem; border-radius:8px; border:1px solid var(--border); width:260px; }
-
-    /* responsive */
-    @media (max-width:920px){
-      .services-grid { grid-template-columns: 1fr; }
-      .service-actions { justify-content:flex-start; }
-      .hero { padding:24px 0 10px; }
+    /* small screens */
+    @media (max-width:768px) {
+      .svc-grid { grid-template-columns: 1fr; }
+      .controls { justify-content:stretch; }
     }
 
-    /* focus states */
-    .service-card:focus { outline:3px solid rgba(0,0,0,0.06); box-shadow:0 8px 30px rgba(0,0,0,0.04); transform:translateY(-4px); }
+    /* accessibility focus */
+    .svc-card:focus { outline:3px solid rgba(0,0,0,0.06); transform:translateY(-6px); }
+
   </style>
 </head>
 <body>
   <!-- NAV -->
-  <nav class="navbar navbar-expand-lg navbar-light" aria-label="Primary navigation">
-    <div class="container-lg d-flex align-items-center justify-content-between">
-      <a class="brand" href="index.html" aria-label="JK Konsult home">
+  <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+    <div class="container container-wide d-flex align-items-center justify-content-between">
+      <a class="d-flex align-items-center brand" href="index.html" aria-label="JK Konsult home">
         <div class="brand-mark" aria-hidden="true">JK</div>
-        <div>
-          <div style="font-weight:800;color:var(--fg)">JK Konsult</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:2px">Career Coaching & Resumes</div>
+        <div class="brand-title">
+          <div style="font-weight:800;">JK Konsult</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:2px;">Career Coaching & Resumes</div>
         </div>
       </a>
 
-      <div class="d-flex align-items-center">
-        <button class="navbar-toggler me-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-          <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true" width="24" height="18">
-            <rect x="0" y="0" width="24" height="2"></rect>
-            <rect x="0" y="8" width="24" height="2"></rect>
-            <rect x="0" y="16" width="24" height="2"></rect>
-          </svg>
-        </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <svg viewBox="0 0 24 18" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <rect x="0" y="0" width="24" height="2"></rect>
+          <rect x="0" y="8" width="24" height="2"></rect>
+          <rect x="0" y="16" width="24" height="2"></rect>
+        </svg>
+      </button>
 
-        <div class="collapse navbar-collapse" id="mainNav">
-          <ul class="navbar-nav ms-auto align-items-lg-center">
-            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-            <li class="nav-item"><a class="nav-link active" href="services.html">Services</a></li>
-            <li class="nav-item"><a class="nav-link" href="why.html">Why</a></li>
-            <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
-            <li class="nav-item ms-3"><button id="bookTop" class="btn btn-outline">Book / Chat</button></li>
-          </ul>
-        </div>
+      <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link active" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="why.html">Why</a></li>
+          <li class="nav-item"><a class="nav-link" href="testimonials.html">Testimonials</a></li>
+          <li class="nav-item ms-3"><button id="bookTop" class="btn btn-outline">Book a Call</button></li>
+        </ul>
       </div>
     </div>
   </nav>
 
-  <!-- MAIN -->
-  <main class="container-lg" role="main">
-    <!-- HERO -->
-    <section class="hero" aria-labelledby="heroTitle">
-      <h1 id="heroTitle">Services — clear, results-focused (prices in NGN)</h1>
-      <p class="lead">Below are the core services offered by JK Konsult. Each service summary is intentionally concise — the full brief is available as a downloadable PDF.</p>
+  <!-- HERO -->
+  <main class="container-wide">
+    <header class="hero">
+      <div class="micro">Premium • Trusted • Professional</div>
+      <h1>Services — full offering</h1>
+      <p class="lead">Below are the complete service descriptions as provided in the project brief. Prices are shown in Naira where applicable. Click <strong>Book</strong> to open WhatsApp and start a booking conversation.</p>
 
-      <div style="margin-top:12px;">
-        <a class="download-btn" href="JK Konsulting.pdf" download aria-label="Download full service brief (PDF)">
-          <i class="fa-solid fa-file-arrow-down"></i>
-          Download full brief (PDF)
-        </a>
+      <div class="controls">
+        <input id="searchBox" class="form-control search-input" placeholder="Search services (e.g., CV, LinkedIn, interview)" aria-label="Search services">
+        <div style="margin-left:auto; display:flex; gap:8px;">
+          <button class="btn btn-outline" id="contactBtn">Contact</button>
+          <button class="btn btn-primary" id="primaryCTA">Book via WhatsApp</button>
+        </div>
       </div>
-    </section>
+    </header>
 
     <!-- SERVICES GRID -->
-    <section aria-labelledby="services-list" style="margin-top:18px;">
-      <h2 id="services-list" class="visually-hidden">Services</h2>
+    <section id="services" aria-labelledby="servicesHeading">
+      <h2 id="servicesHeading" class="visually-hidden">Services</h2>
 
-      <div class="services-grid" role="list">
-        <!-- CV Review & Refinement -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-cv-title">
-          <div class="service-head">
-            <div class="service-ico"><i class="fa-solid fa-file-lines" aria-hidden="true"></i></div>
+      <div id="svcGrid" class="svc-grid" role="list">
+
+        <!-- 1. CV Review & Refinement (full content) -->
+        <article class="svc-card" role="listitem" tabindex="0" aria-labelledby="svc-cv-title" data-service="CV Review & Refinement">
+          <div class="svc-meta">
+            <div class="svc-ico" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></div>
             <div style="flex:1">
-              <h3 id="svc-cv-title" class="service-title">CV Review & Refinement</h3>
-              <div class="service-desc">Keyword-optimised CVs tailored for your role and industry so your application passes ATS and appeals to recruiters.</div>
+              <h3 id="svc-cv-title" class="svc-title">CV Review &amp; Refinement</h3>
 
-              <div class="benefits" aria-label="What you benefit">
-                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
-                <ol>
-                  <li>Keyword-optimised CV that clears Applicant Tracking Systems (within 5 working days).</li>
-                  <li>Layout, structuring and formatting for clarity and impact.</li>
-                  <li>Content alignment with job requirements and fixes for gaps/inconsistencies.</li>
-                </ol>
+              <div class="svc-desc">
+Your CV represents you as a brand and serves the most important role in your job search. Do you know the traditional generic CV rules don’t apply to tech CVs? Are you aware of important CV keywords in your industry? I can be of help. Let’s work together to make your CV stand out!
               </div>
 
-              <div class="pricing" aria-hidden="false">
-                <div class="price-row"><div class="price-tier">Standard (48–72 hrs)</div><div class="price-amount">₦50,000</div></div>
-                <div class="price-row"><div class="price-tier">Express (within 24 hrs)</div><div class="price-amount">₦70,000</div></div>
+              <div class="svc-details">
+What You Benefit
+1. A keyword-optimized CV that can go through any Applicant Tracking System (ATS) available within 5 work days.
+2. Layout, structuring, and formatting
+3. Content alignment with job requirements and restructuring to meet gaps and inconsistencies
+              </div>
+
+              <div class="pricing" aria-label="CV pricing">
+                <div class="price-row"><div class="price-tier">Standard</div><div class="price-amount">₦50,000</div></div>
+                <div class="price-row"><div class="price-tier">24-hour Delivery</div><div class="price-amount">₦70,000</div></div>
                 <div class="price-row"><div class="price-tier">Executive</div><div class="price-amount">₦100,000</div></div>
               </div>
 
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="CV Review & Refinement" data-plan="Info">Details</button>
-                <button class="btn btn-primary book-btn" data-service="CV Review & Refinement" data-plan="Standard" data-price="50000">Book — ₦50,000</button>
+              <div class="svc-actions">
+                <button class="btn btn-outline details-btn" data-service="CV Review & Refinement">Details</button>
+                <button class="btn btn-primary book-btn" data-service="CV Review & Refinement" data-price="₦50,000">Book — ₦50,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- LinkedIn Optimisation -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-linkedin-title">
-          <div class="service-head">
-            <div class="service-ico"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></div>
+        <!-- 2. LinkedIn Optimisation (full content + two price options) -->
+        <article class="svc-card" role="listitem" tabindex="0" aria-labelledby="svc-linkedin-title" data-service="LinkedIn Optimisation">
+          <div class="svc-meta">
+            <div class="svc-ico" aria-hidden="true"><i class="fa-brands fa-linkedin"></i></div>
             <div style="flex:1">
-              <h3 id="svc-linkedin-title" class="service-title">LinkedIn Optimisation</h3>
-              <div class="service-desc">Optimize your profile (title, About, keywords) so you appear in recruiter searches and on Google results.</div>
+              <h3 id="svc-linkedin-title" class="svc-title">LinkedIn Optimisation</h3>
 
-              <div class="benefits" aria-label="What you benefit">
-                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
-                <ol>
-                  <li>Keyword-driven profile optimised for your role and skills.</li>
-                  <li>A persuasive About section showcasing career highlights.</li>
-                  <li>Experience entries aligned with your CV to present consistent impact.</li>
-                </ol>
+              <div class="svc-desc">
+LinkedIn has become the go-to platform for companies to attract, engage, and hire top talents. Your LinkedIn profile must standout by having the right job title, keywords and opportunity to connect with the right people.
               </div>
 
-              <div class="pricing">
+              <div class="svc-details">
+When your profile is well optimised, it will appear among top searches by recruiters and hiring managers. In addition, when recruiters search for profiles on Google, your profile can also show in the search result.
+
+What You Benefit
+1. Keyword-optimised LinkedIn profile based on your job, skills and experience
+2. A strong about section that present the best part of your career journey
+3. Work experience that’s closely align with your CV
+              </div>
+
+              <div class="pricing" aria-label="LinkedIn pricing">
                 <div class="price-row"><div class="price-tier">Full Optimisation</div><div class="price-amount">₦40,000</div></div>
-                <div class="price-row"><div class="price-tier">LinkedIn + CV Review (combo)</div><div class="price-amount">₦80,000</div></div>
+                <div class="price-row"><div class="price-tier">LinkedIn Optimisation + CV Review</div><div class="price-amount">₦80,000</div></div>
               </div>
 
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="LinkedIn Optimisation" data-plan="Info">Details</button>
-                <button class="btn btn-primary book-btn" data-service="LinkedIn Optimisation" data-plan="Full Optimisation" data-price="40000">Book — ₦40,000</button>
+              <div class="svc-actions">
+                <button class="btn btn-outline details-btn" data-service="LinkedIn Optimisation">Details</button>
+                <button class="btn btn-primary book-btn" data-service="LinkedIn Optimisation" data-price="₦40,000">Book — ₦40,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Job Interview Preparation -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-interview-title">
-          <div class="service-head">
-            <div class="service-ico"><i class="fa-solid fa-comments" aria-hidden="true"></i></div>
+        <!-- 3. Job Interview Preparation (full content + prices) -->
+        <article class="svc-card" role="listitem" tabindex="0" aria-labelledby="svc-interview-title" data-service="Job Interview Preparation">
+          <div class="svc-meta">
+            <div class="svc-ico" aria-hidden="true"><i class="fa-solid fa-comments"></i></div>
             <div style="flex:1">
-              <h3 id="svc-interview-title" class="service-title">Job Interview Preparation</h3>
-              <div class="service-desc">Practical preparation for screening, behavioural and hiring-manager interviews — includes mock, feedback and negotiation tips.</div>
+              <h3 id="svc-interview-title" class="svc-title">Job Interview Preparation</h3>
 
-              <div class="benefits" aria-label="What you benefit">
-                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
-                <ol>
-                  <li>Pre-interview checklist and key preparation points.</li>
-                  <li>How to structure answers and handle behavioural/technical questions.</li>
-                  <li>Mock interview with recorded feedback and negotiation guidance.</li>
-                </ol>
+              <div class="svc-desc">
+When you are well-prepared for a job interview, you are equipped with confidence and believe to excel. In this session, you’ll learn things you must know before an interview, what to do during interviews, and questions you must ask at the end of every interview.
               </div>
 
-              <div class="pricing">
-                <div class="price-row"><div class="price-tier">One-time session (60 mins)</div><div class="price-amount">₦70,000</div></div>
-                <div class="price-row"><div class="price-tier">Package (3 sessions)</div><div class="price-amount">₦150,000</div></div>
+              <div class="svc-details">
+Whether you are having a recruiter screening call, behavioural/culture-fit interview, or hiring manager interview, this session will prepare you for the best outcome.
+
+What You Benefit
+1. Things to know before your next interview.
+2. How to answer respond and ace job interview questions
+3. A mock interview and feedback to measure your level of preparation.
+4. Tips on dos and don’ts during a job interview
+5. Salary negotiation…
               </div>
 
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="Job Interview Preparation" data-plan="Info">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Job Interview Preparation" data-plan="One-time session" data-price="70000">Book — ₦70,000</button>
+              <div class="pricing" aria-label="Interview pricing">
+                <div class="price-row"><div class="price-tier">One-time session</div><div class="price-amount">₦70,000</div></div>
+                <div class="price-row"><div class="price-tier">Three-session package</div><div class="price-amount">₦150,000</div></div>
+              </div>
+
+              <div class="svc-actions">
+                <button class="btn btn-outline details-btn" data-service="Job Interview Preparation">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Job Interview Preparation" data-price="₦70,000">Book — ₦70,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Career Coaching -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-career-title">
-          <div class="service-head">
-            <div class="service-ico"><i class="fa-solid fa-compass" aria-hidden="true"></i></div>
+        <!-- 4. Career Coaching (full content) -->
+        <article class="svc-card" role="listitem" tabindex="0" aria-labelledby="svc-career-title" data-service="Career Coaching">
+          <div class="svc-meta">
+            <div class="svc-ico" aria-hidden="true"><i class="fa-solid fa-people-roof"></i></div>
             <div style="flex:1">
-              <h3 id="svc-career-title" class="service-title">Career Coaching</h3>
-              <div class="service-desc">Bespoke sessions focused on clarity, transitions and purpose — practical next steps tailored to you.</div>
+              <h3 id="svc-career-title" class="svc-title">Career Coaching</h3>
 
-              <div class="benefits" aria-label="What you benefit">
-                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
-                <ol>
-                  <li>Career clarity and actionable next steps.</li>
-                  <li>Guidance for career transitions or role pivots.</li>
-                  <li>Exploration of career paths aligned with your purpose.</li>
-                </ol>
+              <div class="svc-desc">
+A bespoke conversation tailored towards your specific career needs. We guide you on your journey to find your North star.
               </div>
 
-              <div class="pricing">
-                <div class="price-row"><div class="price-tier">Single session</div><div class="price-amount">₦85,000</div></div>
+              <div class="svc-details">
+This session is a purpose-based career development focuses on understanding one’s career path with one’s personal sense of purpose, which leads to greater fulfilment and meaning in life.
+
+This session is for people transitioning into new career, currently stock, lack meaning and purpose in current career.
+
+What You Benefit
+1. You’ll get career clarity and next steps to advance your career
+2. Get guidance if you’re transitioning into a new career
+3. Exploration of different career path that aligns with your purpose…
               </div>
 
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="Career Coaching" data-plan="Info">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Career Coaching" data-plan="Single session" data-price="85000">Book — ₦85,000</button>
+              <div class="pricing" aria-label="Career Coaching pricing">
+                <!-- The user did not insist a price; including a single-session reference price (adjustable) -->
+                <div class="price-row"><div class="price-tier">Single Session</div><div class="price-amount">₦85,000</div></div>
+              </div>
+
+              <div class="svc-actions">
+                <button class="btn btn-outline details-btn" data-service="Career Coaching">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Career Coaching" data-price="₦85,000">Book — ₦85,000</button>
               </div>
             </div>
           </div>
         </article>
 
-        <!-- Speaking Engagement (no price) -->
-        <article class="service-card" role="listitem" tabindex="0" aria-labelledby="svc-speaking-title">
-          <div class="service-head">
-            <div class="service-ico"><i class="fa-solid fa-microphone" aria-hidden="true"></i></div>
+        <!-- 5. Speaking Engagement (full content; no price) -->
+        <article class="svc-card" role="listitem" tabindex="0" aria-labelledby="svc-speaking-title" data-service="Speaking Engagement">
+          <div class="svc-meta">
+            <div class="svc-ico" aria-hidden="true"><i class="fa-solid fa-microphone"></i></div>
             <div style="flex:1">
-              <h3 id="svc-speaking-title" class="service-title">Speaking Engagement</h3>
-              <div class="service-desc">Keynotes, workshops and panels — practical, evidence-based talks tailored to your audience.</div>
+              <h3 id="svc-speaking-title" class="svc-title">Speaking Engagement</h3>
 
-              <div class="benefits" aria-label="What you benefit">
-                <strong style="display:block;margin-bottom:6px;color:var(--fg)">What you benefit</strong>
-                <ol>
-                  <li>Audience-focused keynote or workshop.</li>
-                  <li>Actionable takeaways and practical frameworks.</li>
-                  <li>Custom content for your event.</li>
-                </ol>
+              <div class="svc-desc">
+Are you looking for a dynamic and engaging speaker to elevate your next event?
               </div>
 
-              <div class="service-actions">
-                <button class="btn btn-outline" data-service="Speaking Engagement" data-plan="Info">Details</button>
-                <button class="btn btn-primary book-btn" data-service="Speaking Engagement" data-plan="Request Quote" data-price="0">Request quote</button>
+              <div class="svc-details">
+I bring a unique international career expertise, passion, and storytelling to every seminar, keynote, workshop, or panel discussion.
+              </div>
+
+              <div style="margin-top:12px; color:var(--muted); font-weight:600;">
+                Pricing: Available on request (no fixed price shown).
+              </div>
+
+              <div class="svc-actions">
+                <button class="btn btn-outline details-btn" data-service="Speaking Engagement">Details</button>
+                <button class="btn btn-primary book-btn" data-service="Speaking Engagement" data-price="">Request quote</button>
               </div>
             </div>
           </div>
         </article>
 
+      </div> <!-- end grid -->
+
+      <!-- full-service expanded area (reveals when Details clicked) -->
+      <div id="expandedService" style="margin-top:22px; display:none;">
+        <div class="svc-card" id="expandedCard" style="background:#fff; color:#000;">
+          <h3 id="expandedTitle" style="margin-top:0;"></h3>
+          <div id="expandedBody" style="color:var(--muted); white-space:pre-wrap; margin-top:8px;"></div>
+          <div style="margin-top:12px; display:flex; justify-content:flex-end;">
+            <button id="expandedBook" class="btn btn-primary" style="margin-right:8px;">Book via WhatsApp</button>
+            <button id="expandedClose" class="btn btn-outline">Close</button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="faq" aria-labelledby="faqHeading">
+      <h2 id="faqHeading" style="margin-top:36px;">Frequently asked questions</h2>
+      <div class="accordion mt-3" id="faqAccordion">
+        <div class="accordion-item mb-2" style="border:none;">
+          <h2 class="accordion-header" id="faqH1">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+              How long does delivery take?
+            </button>
+          </h2>
+          <div id="faq1" class="accordion-collapse collapse" aria-labelledby="faqH1" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Standard edits (CV Review & Refinement) are completed within 5 working days. Express / 24-hour options are available at additional cost (shown on the service card).</div>
+          </div>
+        </div>
+
+        <div class="accordion-item mb-2" style="border:none;">
+          <h2 class="accordion-header" id="faqH2">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+              Do you work with executive clients?
+            </button>
+          </h2>
+          <div id="faq2" class="accordion-collapse collapse" aria-labelledby="faqH2" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes — executive CVs and leadership positioning are part of our services. Executive packages are available (see CV Executive option).</div>
+          </div>
+        </div>
+
+        <div class="accordion-item mb-2" style="border:none;">
+          <h2 class="accordion-header" id="faqH3">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+              What if I need revisions?
+            </button>
+          </h2>
+          <div id="faq3" class="accordion-collapse collapse" aria-labelledby="faqH3" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Most packages include revision rounds — specifics are clarified at booking depending on the package purchased.</div>
+          </div>
+        </div>
+
+        <div class="accordion-item mb-2" style="border:none;">
+          <h2 class="accordion-header" id="faqH4">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+              How do I share my current resume?
+            </button>
+          </h2>
+          <div id="faq4" class="accordion-collapse collapse" aria-labelledby="faqH4" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">After booking through WhatsApp, we'll provide secure instructions for upload. We accept PDF or Word and request role targets and three achievements to highlight.</div>
+          </div>
+        </div>
+
+        <div class="accordion-item mb-2" style="border:none;">
+          <h2 class="accordion-header" id="faqH5">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+              Do you offer interview practice recordings?
+            </button>
+          </h2>
+          <div id="faq5" class="accordion-collapse collapse" aria-labelledby="faqH5" data-bs-parent="#faqAccordion">
+            <div class="accordion-body">Yes — mock interviews are recorded with timestamped feedback and suggested scripts for follow-ups and negotiation.</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div style="margin-top:18px" class="small-muted">
-      Prices shown are starting rates in NGN (Naira). Final price depends on level and bespoke requirements — we confirm scope when you book. Full service brief available in the downloadable PDF.
-    </div>
+    <!-- FOOTER -->
+    <footer>
+      <div class="container container-wide d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div>
+          <strong>JK Konsult</strong>
+          <div style="color:var(--muted); margin-top:6px">Career coaching & consulting — Resumes, Interviews & Hiring support</div>
+        </div>
+
+        <div style="margin-top:12px" class="text-md-end">
+          <div style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
+            <input id="subscribeEmail" type="email" placeholder="Enter your email" aria-label="Email address for subscription">
+            <button id="subscribeBtn" class="btn btn-outline">Subscribe</button>
+          </div>
+          <div style="margin-top:12px;color:var(--muted); font-size:13px;">&copy; <span id="year"></span> JK Konsult</div>
+        </div>
+      </div>
+    </footer>
+
   </main>
 
-  <!-- floating WhatsApp -->
+  <!-- Floating whatsapp -->
   <div class="float-wa" aria-hidden="false">
     <button id="waFloat" class="wa-btn" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
-      <i class="fab fa-whatsapp fa-lg" style="color:#fff"></i>
+      <i class="fab fa-whatsapp" style="font-size:20px;"></i>
     </button>
   </div>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="container-lg d-flex flex-column flex-md-row justify-content-between align-items-center">
-      <div>
-        <strong style="color:var(--fg)">JK Konsult</strong>
-        <div style="color:var(--muted); margin-top:6px">Career coaching & consulting • Resumes, Interviews & Hiring support</div>
-      </div>
-
-      <div style="margin-top:12px" class="text-md-end">
-        <div style="margin-bottom:8px">
-          <input id="subscribeEmail" type="email" placeholder="Enter your email" aria-label="Email for newsletter">
-          <button id="subscribeBtn" class="btn btn-primary" style="margin-left:8px">Subscribe</button>
-        </div>
-        <div style="color:var(--muted); font-size:13px">&copy; <span id="year"></span> JK Konsult</div>
-      </div>
-    </div>
-  </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
   <script>
-    // CONFIG: set your WhatsApp number (no +)
-    const WHATSAPP_NUMBER = '2349065795183';
-    const WA_BASE = 'Hi — I would like to book: ';
+    // CONFIG
+    const WHATSAPP_NUMBER = '2349065795183'; // no plus sign
+    const BASE_WA_MSG = 'Hi — I would like to book or enquire about: ';
 
-    // BOOKING: open WhatsApp with service, plan, price (price passed as plain number in NGN)
-    function openWhatsAppBooking(service, plan, price) {
-      const planPart = plan ? (' — ' + plan) : '';
-      let pricePart = '';
-      if (price && price !== '0') {
-        const n = Number(price);
-        if (!isNaN(n)) pricePart = ' — ₦' + n.toLocaleString();
-      } else if (price === '0') {
-        pricePart = ' — Request quote';
-      }
-      const msg = encodeURIComponent(WA_BASE + service + planPart + pricePart);
-      if (!WHATSAPP_NUMBER || !/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
+    // helpers
+    function openWhatsApp(service = '', price = '') {
+      const priceText = price ? ` — ${price}` : '';
+      const message = encodeURIComponent(BASE_WA_MSG + service + priceText);
+      if (!/^\d{8,15}$/.test(WHATSAPP_NUMBER)) {
         window.open('https://web.whatsapp.com/', '_blank');
-        alert('Please configure a valid WhatsApp number in the script.');
+        alert('Please configure a valid WhatsApp number in the code.');
         return;
       }
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`;
+      window.open(url, '_blank');
     }
 
-    // Wire the Book buttons
+    // Wire book buttons
     document.querySelectorAll('.book-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
-        const svc = btn.getAttribute('data-service') || btn.closest('.service-card')?.querySelector('.service-title')?.innerText || 'Service';
-        const plan = btn.getAttribute('data-plan') || '';
+        const svc = btn.getAttribute('data-service') || '';
         const price = btn.getAttribute('data-price') || '';
-        openWhatsAppBooking(svc, plan, price);
+        openWhatsApp(svc, price);
       });
     });
 
-    // Details buttons: send info request via WhatsApp
-    document.querySelectorAll('.service-card .btn-outline').forEach(btn => {
+    // Primary CTA and top book
+    document.getElementById('primaryCTA')?.addEventListener('click', () => openWhatsApp('General enquiry',''));
+    document.getElementById('bookTop')?.addEventListener('click', () => openWhatsApp('General enquiry',''));
+    document.getElementById('contactBtn')?.addEventListener('click', () => openWhatsApp('General enquiry',''));
+
+    // floating wa
+    document.getElementById('waFloat')?.addEventListener('click', () => openWhatsApp('General enquiry',''));
+
+    // Details toggle: show expanded full text (no PDF)
+    const detailsButtons = document.querySelectorAll('.details-btn');
+    const expanded = document.getElementById('expandedService');
+    const expandedTitle = document.getElementById('expandedTitle');
+    const expandedBody = document.getElementById('expandedBody');
+    const expandedBook = document.getElementById('expandedBook');
+    const expandedClose = document.getElementById('expandedClose');
+
+    detailsButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const svc = btn.getAttribute('data-service') || btn.closest('.service-card')?.querySelector('.service-title')?.innerText || 'Service';
-        openWhatsAppBooking(svc, 'Info request', '');
+        const card = btn.closest('.svc-card');
+        const title = card.querySelector('.svc-title')?.innerText || 'Service';
+        const bodyParts = [];
+        // collect description and details blocks (preserve formatting)
+        const desc = card.querySelector('.svc-desc')?.innerText || '';
+        const details = card.querySelector('.svc-details')?.innerText || '';
+        bodyParts.push(desc);
+        if (details) bodyParts.push('\n\n' + details);
+        // show price lines as well
+        const prices = Array.from(card.querySelectorAll('.price-row')).map(r => r.innerText.trim());
+        if (prices.length) {
+          bodyParts.push('\n\nPricing:\n' + prices.join('\n'));
+        }
+
+        expandedTitle.textContent = title;
+        expandedBody.textContent = bodyParts.join('\n');
+        expandedBook.dataset.service = title;
+        expandedBook.dataset.price = (card.querySelector('.price-row .price-amount')?.innerText || '');
+        expanded.style.display = 'block';
+        expanded.scrollIntoView({ behavior: 'smooth' });
+
+        // animate the expanded card in (GSAP)
+        if (window.gsap) {
+          gsap.fromTo('#expandedCard', { y: 12, opacity: 0 }, { y:0, opacity:1, duration:0.45, ease:'power3.out' });
+        }
       });
     });
 
-    // Floating WA
-    document.getElementById('waFloat')?.addEventListener('click', ()=> {
-      window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hi — I have a question about JK Konsult services.')}`, '_blank');
+    expandedBook.addEventListener('click', () => {
+      openWhatsApp(expandedBook.dataset.service || '', expandedBook.dataset.price || '');
+    });
+    expandedClose.addEventListener('click', () => { expanded.style.display = 'none'; });
+
+    // Search filter (simple)
+    const searchBox = document.getElementById('searchBox');
+    const svcCards = Array.from(document.querySelectorAll('.svc-card'));
+    searchBox?.addEventListener('input', (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      svcCards.forEach(card => {
+        const text = (card.innerText || '').toLowerCase();
+        card.style.display = text.includes(q) ? '' : 'none';
+      });
     });
 
-    // Top nav Book
-    document.getElementById('bookTop')?.addEventListener('click', ()=> openWhatsAppBooking('General enquiry', '', ''));
-
-    // Subscribe demo
-    document.getElementById('subscribeBtn')?.addEventListener('click', ()=> {
+    // subscription demo (no backend)
+    document.getElementById('subscribeBtn')?.addEventListener('click', () => {
       const email = (document.getElementById('subscribeEmail')?.value || '').trim();
-      if(!email || !/^\S+@\S+\.\S+$/.test(email)) return alert('Enter a valid email.');
+      if (!email || !/^\S+@\S+\.\S+$/.test(email)) return alert('Enter a valid email address.');
       alert('Thanks — subscription saved (demo).');
       document.getElementById('subscribeEmail').value = '';
     });
 
-    // Enter on card triggers primary book
-    document.querySelectorAll('.service-card').forEach(card => {
-      card.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          const primary = card.querySelector('.book-btn') || card.querySelector('.btn-outline');
-          if (primary) primary.click();
-        }
-      });
-    });
-
-    // set year
+    // set footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // GSAP animations — hero reveal, card stagger, WA pulse
-    gsap.registerPlugin(ScrollTrigger);
-    (function animate() {
-      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduced) return;
+    // Accessibility: allow Enter to click primary actions
+    document.querySelectorAll('button, [role="button"]').forEach(el => {
+      el.addEventListener('keydown', (ev) => { if (ev.key === 'Enter') ev.target.click(); });
+    });
 
-      gsap.from("#heroTitle", { y: 18, opacity: 0, duration: 0.7, ease: "power3.out" });
-      gsap.from(".hero p.lead", { y: 10, opacity: 0, duration: 0.6, delay: 0.12, ease: "power3.out" });
-      gsap.from(".download-btn", { y: 10, opacity: 0, duration: 0.6, delay: 0.18, ease: "power3.out" });
+    // GSAP animations: heading + reveal cards
+    if (window.gsap) {
+      gsap.registerPlugin(ScrollTrigger);
+      // heading intro
+      gsap.from('.hero h1', { y: 20, opacity: 0, duration: 0.9, ease: 'power3.out' });
+      gsap.from('.hero p.lead', { y: 14, opacity: 0, duration: 0.7, delay: 0.12 });
 
-      gsap.utils.toArray('.service-card').forEach((card, i) => {
-        gsap.fromTo(card, { y: 20, opacity: 0 }, {
-          y: 0, opacity: 1, duration: 0.7, ease: 'power3.out', delay: 0.08 * i,
-          scrollTrigger: { trigger: card, start: 'top 92%', toggleActions: 'play none none reverse' }
+      // reveal each service card with stagger
+      gsap.utils.toArray('.svc-card').forEach((card, i) => {
+        gsap.from(card, {
+          y: 20,
+          opacity: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          delay: i * 0.06,
+          scrollTrigger: { trigger: card, start: 'top 92%' }
         });
-
-        const primary = card.querySelector('.btn-primary');
-        if (primary) {
-          primary.addEventListener('mouseenter', () => gsap.to(primary, { scale: 1.03, duration: 0.12 }));
-          primary.addEventListener('mouseleave', () => gsap.to(primary, { scale: 1.0, duration: 0.12 }));
-        }
       });
 
-      const wa = document.querySelector('.wa-btn');
-      if (wa) gsap.to(wa, { scale: 1.06, boxShadow: "0 18px 40px rgba(37,211,102,0.14)", duration: 1.4, repeat: -1, yoyo: true, ease: "sine.inOut", delay: 0.6 });
-    })();
+      // subtle floating for CTA buttons
+      const primary = document.querySelectorAll('.btn-primary');
+      gsap.to(primary, { scale: 1.02, duration: 1.4, repeat: -1, yoyo: true, ease: 'sine.inOut', stagger: 0.12, delay: 1.2 });
+    }
   </script>
 </body>
 </html>
